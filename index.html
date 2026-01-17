@@ -5,10 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>115年國軍獎金試算系統</title>
     <style>
+        :root {
+            --tactical-black: #1a1a1a;
+            --cement-gray: #f0f0f0;
+            --warning-orange: #ff4d00;
+            --metal-gray: #7f8c8d;
+        }
+
         body {
-            background-color: #2f3640;
-            color: #f5f6fa;
-            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+            background-color: var(--cement-gray);
+            color: var(--tactical-black);
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -16,106 +23,108 @@
         }
 
         .container {
-            background-color: #353b48;
+            background-color: #fff;
             width: 100%;
             max-width: 450px;
-            border: 2px solid #7f8c8d;
-            border-radius: 4px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            overflow: hidden;
+            border: 3px solid var(--tactical-black);
+            position: relative;
         }
 
-        /* 標題區：黃黑警告條紋 */
-        .header {
-            background: repeating-linear-gradient(-45deg, #f1c40f, #f1c40f 15px, #2f3640 15px, #2f3640 30px);
-            padding: 15px;
+        /* 頂部裝飾條 */
+        .top-stripe {
+            height: 15px;
+            background: repeating-linear-gradient(-45deg, var(--tactical-black), var(--tactical-black) 10px, var(--warning-orange) 10px, var(--warning-orange) 20px);
+        }
+
+        header {
+            padding: 30px 20px;
             text-align: center;
-            border-bottom: 3px solid #000;
+            border-bottom: 2px solid var(--tactical-black);
         }
 
-        .header h2 {
+        h2 {
             margin: 0;
-            background: #2f3640;
-            color: #f1c40f;
-            display: inline-block;
-            padding: 5px 20px;
+            font-size: 24px;
             font-weight: 900;
-            border: 2px solid #f1c40f;
+            letter-spacing: 2px;
+            color: var(--tactical-black);
         }
 
         .content {
             padding: 25px;
         }
 
-        .group-box {
-            background: #2f3640;
-            border-left: 5px solid #f1c40f;
-            padding: 15px;
-            margin-bottom: 25px;
-            box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+        section {
+            margin-bottom: 30px;
+            border-left: 4px solid var(--tactical-black);
+            padding-left: 15px;
         }
 
-        .group-title {
-            color: #f1c40f;
-            font-weight: bold;
+        h3 {
+            font-size: 16px;
+            background: var(--tactical-black);
+            color: #fff;
+            display: inline-block;
+            padding: 2px 10px;
             margin-bottom: 15px;
-            font-size: 18px;
-            display: block;
         }
 
         label {
             display: block;
-            margin: 12px 0 6px;
-            font-size: 14px;
-            color: #dcdde1;
+            font-size: 13px;
+            font-weight: bold;
+            margin: 10px 0 5px;
+            color: var(--metal-gray);
         }
 
         select {
             width: 100%;
             padding: 12px;
-            background: #f5f6fa;
-            color: #2f3640;
-            border: none;
+            background: #fff;
+            color: var(--tactical-black);
+            border: 2px solid var(--tactical-black);
             font-size: 16px;
             font-weight: bold;
+            border-radius: 0;
             margin-bottom: 10px;
+            appearance: none;
         }
 
-        .checkbox-container {
+        .checkbox-row {
             display: flex;
             align-items: center;
-            margin-top: 10px;
-            color: #f1c40f;
-            font-weight: bold;
+            margin: 15px 0;
+            font-weight: 900;
+            color: var(--warning-orange);
         }
 
         input[type="checkbox"] {
-            width: 20px; height: 20px; margin-right: 10px;
+            width: 22px;
+            height: 22px;
+            margin-right: 10px;
+            accent-color: var(--warning-orange);
         }
 
-        /* 按鈕：強化重工業感 */
-        .calc-btn {
+        button {
             width: 100%;
-            padding: 18px;
-            background: #f1c40f;
-            color: #2f3640;
+            padding: 20px;
+            background: var(--tactical-black);
+            color: #fff;
             border: none;
             font-size: 20px;
             font-weight: 900;
             cursor: pointer;
-            box-shadow: 0 5px 0 #c29d0b;
+            transition: 0.1s;
         }
 
-        .calc-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0 #c29d0b;
+        button:active {
+            background: var(--warning-orange);
         }
 
         #result {
             margin-top: 25px;
-            background: #1e272e;
+            border: 3px solid var(--warning-orange);
             padding: 20px;
-            border: 2px dashed #f1c40f;
             display: none;
         }
 
@@ -124,86 +133,89 @@
             justify-content: space-between;
             margin-bottom: 10px;
             font-size: 18px;
+            font-weight: bold;
         }
 
         .total-line {
-            color: #f1c40f;
-            font-size: 24px;
-            font-weight: bold;
-            border-top: 1px solid #555;
-            padding-top: 10px;
+            border-top: 2px solid var(--tactical-black);
+            padding-top: 15px;
+            color: var(--warning-orange);
+            font-size: 26px;
         }
 
-        /* 頁尾作者欄 */
         footer {
-            background: #1e272e;
-            padding: 20px;
+            padding: 30px 20px;
             text-align: center;
-            border-top: 2px solid #7f8c8d;
+            background: #eee;
+            border-top: 2px solid var(--tactical-black);
         }
 
-        .author-tag {
-            background: linear-gradient(to bottom, #bdc3c7, #7f8c8d);
-            color: #2f3640;
-            padding: 6px 25px;
-            border-radius: 2px;
-            font-weight: 900;
+        .author-box {
+            border: 2px solid var(--tactical-black);
+            padding: 10px;
             display: inline-block;
-            border: 1px solid #000;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+            font-weight: 900;
+            background: #fff;
+        }
+
+        .version-text {
+            font-size: 11px;
+            margin-top: 10px;
+            color: var(--metal-gray);
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
-        <h2>年終獎金試算系統</h2>
-    </div>
+    <div class="top-stripe"></div>
+    <header>
+        <h2>115年獎金試算系統</h2>
+    </header>
 
     <div class="content">
-        <div class="group-box">
-            <span class="group-title">一、年終獎金</span>
+        <section>
+            <h3>一、年終獎金試算</h3>
             <label>12月生效階級</label>
             <select id="r1" onchange="updateLevels('l1', this.value)"></select>
             <label>俸級</label>
             <select id="l1"></select>
-            <div class="checkbox-container">
-                <input type="checkbox" id="b1" checked> 支領領導職務加給
+            <div class="checkbox-row">
+                <input type="checkbox" id="b1" checked> 支領領導加給
             </div>
-        </div>
+        </section>
 
-        <div class="group-box">
-            <span class="group-title">二、考績獎金</span>
-            <label>考績生效階級</label>
+        <section>
+            <h3>二、考績獎金試算</h3>
+            <label>生效階級</label>
             <select id="r2" onchange="updateLevels('l2', this.value)"></select>
             <label>俸級</label>
             <select id="l2"></select>
-            <div class="checkbox-container">
-                <input type="checkbox" id="b2" checked> 支領領導職務加給
+            <div class="checkbox-row">
+                <input type="checkbox" id="b2" checked> 支領領導加給
             </div>
             <label>考績等第</label>
             <select id="eval">
-                <option value="1">甲等 (1.0 個月)</option>
-                <option value="0.5">乙上 (0.5 個月)</option>
+                <option value="1">甲等 (1.0個月)</option>
+                <option value="0.5">乙上 (0.5個月)</option>
             </select>
-        </div>
+        </section>
 
-        <button class="calc-btn" onclick="calculate()">執行計算</button>
+        <button onclick="calculate()">執行計算數據</button>
 
         <div id="result">
             <div class="res-line"><span>預計年終金額:</span><span id="res_y"></span></div>
             <div class="res-line"><span>預計考績金額:</span><span id="res_e"></span></div>
-            <div class="res-line total-line"><span>發放總計總額:</span><span id="res_t"></span></div>
+            <div class="res-line total-line"><span>總額合計:</span><span id="res_t"></span></div>
         </div>
     </div>
 
     <footer>
-        <div class="author-tag">
+        <div class="author-box">
             網頁製作者：上士 郭俊廷
         </div>
-        <div style="font-size: 11px; color: #7f8c8d; margin-top: 10px;">
-            115年國軍薪資調整版本 | 內部試算專用
+        <div class="version-text">
+            115年度國軍薪資調整版本 | 內部參考
         </div>
     </footer>
 </div>
