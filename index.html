@@ -3,173 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>115年獎金試算系統</title>
+    <title>115年國軍獎金試算系統</title>
     <style>
         :root {
-            --navy-blue: #003366;
-            --light-blue: #e6f0fa;
-            --accent-gold: #b8860b;
-            --border-color: #ccd6dd;
+            --army-dark: #1b262c;
+            --army-green: #2d4059;
+            --tactical-yellow: #f6b352;
+            --neon-green: #00ff41;
+            --text-gray: #a8dadc;
         }
 
         body {
-            background-color: #f5f7fa;
-            color: #333;
-            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--army-dark);
+            color: var(--text-gray);
+            font-family: "PingFang TC", "Microsoft JhengHei", monospace;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             justify-content: center;
         }
 
         .container {
-            background-color: #fff;
             width: 100%;
-            max-width: 450px;
-            border: 2px solid var(--navy-blue);
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            overflow: hidden;
+            max-width: 420px;
+            border: 1px solid var(--army-green);
+            background: rgba(45, 64, 89, 0.2);
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        /* 掃描線效果 */
+        .container::before {
+            content: " ";
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 10;
         }
 
         header {
-            background-color: var(--navy-blue);
-            color: #fff;
-            padding: 20px;
-            text-align: center;
+            border-bottom: 2px solid var(--tactical-yellow);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
         }
 
-        header h2 {
+        h2 {
             margin: 0;
-            font-size: 22px;
-            letter-spacing: 2px;
+            font-size: 20px;
+            color: var(--tactical-yellow);
+            text-shadow: 0 0 5px var(--tactical-yellow);
         }
 
-        .content {
-            padding: 25px;
+        .author-top {
+            font-size: 10px;
+            color: var(--neon-green);
         }
 
-        .card {
-            background-color: var(--light-blue);
-            border-radius: 6px;
+        .input-group {
+            border: 1px solid #444;
             padding: 15px;
             margin-bottom: 20px;
-            border: 1px solid var(--border-color);
+            position: relative;
         }
 
-        .card-title {
-            color: var(--navy-blue);
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .card-title::before {
-            content: "◆";
-            margin-right: 8px;
+        .group-label {
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background: var(--army-dark);
+            padding: 0 10px;
             font-size: 12px;
+            color: var(--neon-green);
         }
 
         label {
             display: block;
-            font-size: 14px;
-            margin-bottom: 6px;
-            color: #555;
+            font-size: 13px;
+            margin: 10px 0 5px;
         }
 
         select {
             width: 100%;
             padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            background-color: #fff;
+            background: #0f1a1f;
+            color: var(--neon-green);
+            border: 1px solid var(--army-green);
             font-size: 16px;
-            margin-bottom: 12px;
+            border-radius: 0;
+            outline: none;
         }
 
         .checkbox-row {
             display: flex;
             align-items: center;
-            margin-top: 10px;
-            font-weight: bold;
-            color: var(--navy-blue);
+            margin-top: 15px;
+            color: var(--tactical-yellow);
         }
 
         input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin-right: 10px;
-            accent-color: var(--navy-blue);
+            width: 18px; height: 18px; margin-right: 10px;
+            accent-color: var(--tactical-yellow);
         }
 
-        .static-info {
-            background: #fff;
+        .static-eval {
+            margin-top: 10px;
             padding: 8px;
-            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed var(--army-green);
+            color: #fff;
+            font-size: 14px;
             text-align: center;
-            font-weight: bold;
-            border: 1px solid var(--border-color);
         }
 
         button {
             width: 100%;
             padding: 15px;
-            background-color: var(--navy-blue);
-            color: #fff;
+            background: var(--tactical-yellow);
+            color: var(--army-dark);
             border: none;
-            border-radius: 4px;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.3s;
+            box-shadow: 0 0 10px rgba(246, 179, 82, 0.3);
         }
 
-        button:hover {
-            background-color: #004080;
+        button:active {
+            background: var(--neon-green);
         }
 
         #result {
             margin-top: 25px;
-            border: 2px solid var(--navy-blue);
-            border-radius: 6px;
-            padding: 20px;
+            padding: 15px;
+            border: 1px solid var(--neon-green);
+            background: rgba(0, 255, 65, 0.1);
             display: none;
-            background-color: #fff;
         }
 
         .res-line {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            border-bottom: 1px dashed #eee;
-            padding-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 16px;
         }
 
         .total-line {
-            color: #d9534f;
-            font-size: 24px;
-            font-weight: bold;
-            border: none;
             margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            font-size: 22px;
+            font-weight: bold;
         }
 
         footer {
+            margin-top: 30px;
             text-align: center;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-top: 1px solid #eee;
+            font-size: 12px;
+            border-top: 1px dotted var(--army-green);
+            padding-top: 15px;
         }
 
-        .badge {
-            display: inline-block;
-            background: var(--navy-blue);
-            color: #fff;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 13px;
+        .author-name {
+            color: var(--tactical-yellow);
             font-weight: bold;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -177,51 +181,49 @@
 
 <div class="container">
     <header>
-        <h2>115年 獎金核算系統</h2>
+        <h2>115年獎金試算</h2>
+        <span class="author-top">UID: 郭俊廷</span>
     </header>
 
-    <div class="content">
-        <div class="card">
-            <div class="card-title">年終獎金設定</div>
-            <label>12月生效階級</label>
-            <select id="r1" onchange="updateLevels('l1', this.value)"></select>
-            <label>俸級</label>
-            <select id="l1"></select>
-            <div class="checkbox-row">
-                <input type="checkbox" id="b1" checked> 支領領導加給
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">考績獎金設定</div>
-            <label>考績生效階級</label>
-            <select id="r2" onchange="updateLevels('l2', this.value)"></select>
-            <label>俸級</label>
-            <select id="l2"></select>
-            <div class="checkbox-row">
-                <input type="checkbox" id="b2" checked> 支領領導加給
-            </div>
-            <label>考績等第 (預設)</label>
-            <div class="static-info">甲等 (1.0 個月)</div>
-        </div>
-
-        <button onclick="calculate()">計算預估金額</button>
-
-        <div id="result">
-            <div class="res-line"><span>年終獎金:</span><span id="res_y"></span></div>
-            <div class="res-line"><span>考績獎金:</span><span id="res_e"></span></div>
-            <div class="res-line total-line"><span>總計總額:</span><span id="res_t"></span></div>
+    <div class="input-group">
+        <span class="group-label">年終獎金區塊</span>
+        <label>12月生效階級</label>
+        <select id="r1" onchange="updateLevels('l1', this.value)"></select>
+        <label>俸級</label>
+        <select id="l1"></select>
+        <div class="checkbox-row">
+            <input type="checkbox" id="b1" checked> 支領領導加給
         </div>
     </div>
 
+    <div class="input-group">
+        <span class="group-label">考績獎金區塊</span>
+        <label>生效階級</label>
+        <select id="r2" onchange="updateLevels('l2', this.value)"></select>
+        <label>俸級</label>
+        <select id="l2"></select>
+        <div class="checkbox-row">
+            <input type="checkbox" id="b2" checked> 支領領導加給
+        </div>
+        <label>考績等第 (固定)</label>
+        <div class="static-eval">甲等 (1.0 個月)</div>
+    </div>
+
+    <button onclick="calculate()">RUN_CALCULATION</button>
+
+    <div id="result">
+        <div class="res-line"><span>預估年終獎金:</span><span id="res_y"></span></div>
+        <div class="res-line"><span>預估考績獎金:</span><span id="res_e"></span></div>
+        <div class="res-line total-line"><span>總計發放總額:</span><span id="res_t"></span></div>
+    </div>
+
     <footer>
-        <div class="badge">製作者：上士 郭俊廷</div>
-        <div style="font-size: 11px; color: #888; margin-top: 10px;">115年國軍薪資調整版本 · 系統正式版</div>
+        網頁製作者：<span class="author-name">上士 郭俊廷</span><br>
+        <div style="margin-top: 5px; opacity: 0.6;">115年度國軍薪資結構版本</div>
     </footer>
 </div>
 
 <script>
-// 數據與之前邏輯一致 (省略重複定義以節省長度，請沿用之前的 database 物件)
 const database = {
     "上校": { y_lead: [134715,137025,139320,141615,143910,146205,148500,150810,153105,155400,157710,160005], e_lead: [89810,91350,92880,94410,95940,97470,99010,100540,102070,103600,105140,106670], y_none: [114450,116760,119055,121350,123645,125955,128250,130545,132840,135150,137445,139740], e_none: [76300,77840,79370,80900,82430,83970,85500,87030,88560,90100,91630,93160] },
     "中校": { y_lead: [107415,109200,110985,112770,114555,116340,118125,119910,121695,123480,125265,127050], e_lead: [71610,72800,73990,75180,76370,77560,78750,79940,81130,82320,83510,84700], y_none: [93135,94920,96705,98490,100275,102060,103845,105630,107415,109200,110985,112770], e_none: [62090,63280,64470,65660,66850,68040,69230,70420,71610,72800,73990,75180] },
@@ -271,6 +273,7 @@ function calculate() {
     const rank2 = document.getElementById('r2').value;
     const lv2 = parseInt(document.getElementById('l2').value);
     const isLead2 = document.getElementById('b2').checked;
+    // 固定甲等 = 1.0
     const finalEval = isLead2 ? database[rank2].e_lead[lv2] : database[rank2].e_none[lv2];
 
     document.getElementById('res_y').innerText = "$" + yearEnd.toLocaleString();
