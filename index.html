@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>114年國軍年終考獎自動試算</title>
+    <style>
+        :root { --primary: #2c3e50; --secondary: #27ae60; --accent: #e74c3c; }
+        body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { background: white; width: 100%; max-width: 500px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: var(--primary); border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        .card { background: #f8f9fa; border: 1px solid #e9ecef; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
+        .card-title { font-weight: bold; color: #1a5fb4; margin-bottom: 10px; display: block; border-left: 4px solid #1a5fb4; padding-left: 10px; }
+        label { display: block; font-size: 14px; margin: 10px 0 5px; color: #555; }
+        select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; background: white; margin-bottom: 10px; }
+        .checkbox-group { display: flex; align-items: center; gap: 8px; margin: 10px 0; font-size: 15px; }
+        button { width: 100%; padding: 15px; background: var(--secondary); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        button:hover { background: #219150; }
+        #result { margin-top: 25px; padding: 20px; border-radius: 12px; background: #e8f5e9; display: none; border: 1px solid #c8e6c9; }
+        .res-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 16px; }
+        .total-line { border-top: 1px solid #ccc; padding-top: 10px; margin-top: 10px; font-weight: bold; color: var(--accent); font-size: 20px; }
+    </small>
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🎖️ 114年薪資試算系統</h2>
+
+    <div class="card">
+        <span class="card-title">1. 年終獎金 (12月階級)</span>
+        <label>階級</label>
+        <select id="r1" onchange="updateLevels('l1', this.value)"></select>
+        <label>俸級</label>
+        <select id="l1"></select>
+        <div class="checkbox-group">
+            <input type="checkbox" id="b1" checked> <label for="b1">支領領導職務加給</label>
+        </div>
+    </div>
+
+    <div class="card">
+        <span class="card-title">2. 考績獎金 (生效階級)</span>
+        <label>階級</label>
+        <select id="r2" onchange="updateLevels('l2', this.value)"></select>
+        <label>俸級</label>
+        <select id="l2"></select>
+        <div class="checkbox-group">
+            <input type="checkbox" id="b2" checked> <label for="b2">支領領導職務加給</label>
+        </div>
+        <label>考績等第</label>
+        <select id="eval">
+            <option value="1">甲等 (1.0個月)</option>
+            <option value="0.5">乙上 (0.5個月)</option>
+        </select>
+    </div>
+
+    <button onclick="doCalculate()">立即計算總金額</button>
+
+    <div id="result">
+        <div class="res-line"><span>年終獎金：</span><span id="res_y"></span></div>
+        <div class="res-line"><span>考績獎金：</span><span id="res_e"></span></div>
+        <div class="total-line"><span>預計撥付總計：</span><span id="res_t"></span></div>
+        <p style="font-size:12px; color:#666; margin-top:10px;">*數據源自 114 年調整後薪資表，實際入帳需扣除健保與退撫基金。</p>
+    </div>
+</div>
+
+<script>
+// 直接將 XLSX 數據集成至此 (簡化示意，包含主要階級數據)
+// 數據結構: [非領導年終, 非領導考獎, 領導年終, 領導考獎] (每級增加額)
+const db = {
+    "上校": { start: [114450, 76300, 134715, 89810], diff: [2310, 1540], max: 12 },
+    "中校": { start: [93135, 62090, 107415, 71610], diff: [1785, 1190], max: 12 },
+    "少校": { start: [79785, 53190, 92250, 61500], diff: [1575, 1050], max: 12 },
+    "上尉": { start: [68130, 45420, 76860, 51240], diff: [1245, 830], max: 12 },
+    "中尉": { start: [58680, 39120, 65955, 43970], diff: [1155, 770], max: 12 },
+    "少尉": { start: [53430, 35620, 59685, 39790], diff: [1155, 770], max: 10 },
+    "一等士官長": { start: [67185, 44790, 75525, 50350], diff: [1020, 680], max: 12 },
+    "二等士官長": { start: [57975, 38650, 65535, 43690], diff: [930, 620], max: 12 },
+    "三等士官長": { start: [52545, 35030, 59370, 39580], diff: [855, 570], max: 12 },
+    "上士": { start: [46290, 30860, 50985, 33990], diff: [945, 630], max: 12 },
+    "中士": { start: [41430, 27620, 45540, 30360], diff: [810, 540], max: 12 },
+    "下士": [18510+20340, 18510, 22440, 540], // 這裡修正中士與下士邏輯
+    "上兵": { start: [57240, 38160, 57240, 38160], diff: [0, 0], max: 1 },
+    "一兵": { start: [55170, 36780, 55170, 36780], diff: [0, 0], max: 1 },
+    "二兵": { start: [53130, 35420, 53130, 35420], diff: [0, 0], max: 1 }
+};
+
+// 修正中士數據補全 (直接抓取您提供的 XLSX 數據規律)
+db["中士"] = { start: [61425, 40950, 65535, 43690], diff: [810, 540], max: 12 };
+db["下士"] = { start: [50580, 33720, 54315, 36210], diff: [810, 540], max: 12 };
+
+const ranks = Object.keys(db);
+
+function init() {
+    const sel1 = document.getElementById('r1');
+    const sel2 = document.getElementById('r2');
+    ranks.forEach(r => {
+        sel1.add(new Option(r, r));
+        sel2.add(new Option(r, r));
+    });
+    sel1.value = "中士";
+    sel2.value = "上士";
+    updateLevels('l1', "中士");
+    updateLevels('l2', "上士");
+}
+
+function updateLevels(id, rank) {
+    const lSel = document.getElementById(id);
+    lSel.innerHTML = "";
+    for(let i=1; i<=db[rank].max; i++) {
+        lSel.add(new Option(i + "級", i-1));
+    }
+}
+
+function doCalculate() {
+    // 年終 (中士)
+    const rank1 = document.getElementById('r1').value;
+    const lv1 = parseInt(document.getElementById('l1').value);
+    const boss1 = document.getElementById('b1').checked;
+    const d1 = db[rank1];
+    const yearEnd = (boss1 ? d1.start[2] : d1.start[0]) + (lv1 * d1.diff[0]);
+
+    // 考獎 (上士)
+    const rank2 = document.getElementById('r2').value;
+    const lv2 = parseInt(document.getElementById('l2').value);
+    const boss2 = document.getElementById('b2').checked;
+    const rate = parseFloat(document.getElementById('eval').value);
+    const d2 = db[rank2];
+    const evalFull = (boss2 ? d2.start[3] : d2.start[1]) + (lv2 * d2.diff[1]);
+    const evalFinal = evalFull * rate;
+
+    // 顯示
+    document.getElementById('res_y').innerText = "$" + Math.round(yearEnd).toLocaleString();
+    document.getElementById('res_e').innerText = "$" + Math.round(evalFinal).toLocaleString();
+    document.getElementById('res_t').innerText = "$" + Math.round(yearEnd + evalFinal).toLocaleString();
+    document.getElementById('result').style.display = 'block';
+}
+
+init();
+</script>
+
+</body>
+</html>
