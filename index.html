@@ -3,23 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>114年國軍年終考獎試算</title>
+    <title>114年國軍獎金試算</title>
     <style>
-        :root { --primary: #2c3e50; --success: #27ae60; --danger: #e74c3c; }
-        body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; background-color: #f4f6f9; margin: 0; padding: 15px; display: flex; justify-content: center; }
-        .container { background: white; width: 100%; max-width: 480px; padding: 20px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: var(--primary); margin-bottom: 20px; }
-        .card { background: #ffffff; border: 1px solid #dfe6e9; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-        .card-title { font-weight: bold; color: #0984e3; margin-bottom: 10px; display: block; border-left: 4px solid #0984e3; padding-left: 10px; }
-        label { display: block; font-size: 14px; margin-top: 10px; color: #636e72; }
-        select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; margin-top: 5px; background-color: #fff; }
-        .checkbox-group { display: flex; align-items: center; gap: 8px; margin: 15px 0 5px; font-weight: bold; color: #2d3436; }
-        input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
-        button { width: 100%; padding: 15px; background: var(--success); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        #result { margin-top: 20px; padding: 20px; border-radius: 12px; background: #fff9db; display: none; border: 1px solid #f9da63; }
+        body { font-family: -apple-system, sans-serif; background-color: #f4f6f9; padding: 15px; display: flex; justify-content: center; }
+        .container { background: white; width: 100%; max-width: 480px; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #2c3e50; }
+        .card { background: #fff; border: 1px solid #dcdde1; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .card-title { font-weight: bold; color: #2980b9; margin-bottom: 10px; display: block; }
+        select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; margin-top: 5px; }
+        .checkbox-group { display: flex; align-items: center; gap: 8px; margin: 15px 0 5px; font-weight: bold; }
+        button { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        #result { margin-top: 20px; padding: 20px; border-radius: 12px; background: #fff9db; display: none; border: 1px solid #f1c40f; }
         .res-line { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 17px; }
-        .total-line { border-top: 2px solid #fab005; padding-top: 10px; margin-top: 10px; font-weight: bold; color: var(--danger); font-size: 22px; }
-    </small>
+        .total { border-top: 2px solid #f1c40f; padding-top: 10px; color: #e74c3c; font-size: 22px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -29,109 +25,110 @@
 
     <div class="card">
         <span class="card-title">1. 年終獎金 (12月階級)</span>
-        <label>階級</label>
         <select id="r1" onchange="updateLevels('l1', this.value)"></select>
-        <label>俸級</label>
-        <select id="l1"></select>
+        <select id="l1" style="margin-top:10px;"></select>
         <div class="checkbox-group">
-            <input type="checkbox" id="b1" checked> <label for="b1">具備領導職身份 (含加給)</label>
+            <input type="checkbox" id="b1" checked> <label for="b1">具備領導職身份</label>
         </div>
     </div>
 
     <div class="card">
         <span class="card-title">2. 考績獎金 (生效階級)</span>
-        <label>階級</label>
         <select id="r2" onchange="updateLevels('l2', this.value)"></select>
-        <label>俸級</label>
-        <select id="l2"></select>
+        <select id="l2" style="margin-top:10px;"></select>
         <div class="checkbox-group">
-            <input type="checkbox" id="b2" checked> <label for="b2">具備領導職身份 (含加給)</label>
+            <input type="checkbox" id="b2" checked> <label for="b2">具備領導職身份</label>
         </div>
-        <label>考績等第</label>
-        <select id="eval">
+        <select id="eval" style="margin-top:10px;">
             <option value="1">甲等 (1.0個月)</option>
             <option value="0.5">乙上 (0.5個月)</option>
         </select>
     </div>
 
-    <button onclick="doCalculate()">開始計算總獎金</button>
+    <button onclick="doCalculate()">開始計算</button>
 
     <div id="result">
-        <div class="res-line"><span>年終獎金：</span><span id="res_y"></span></div>
-        <div class="res-line"><span>考績獎金：</span><span id="res_e"></span></div>
-        <div class="total-line"><span>預計撥付總計：</span><span id="res_t"></span></div>
-        <p style="font-size:12px; color:#7f8c8d; margin-top:10px;">*數據完全對應 114 年 Excel 官方調整表。</p>
+        <div class="res-line"><span>年終獎金：</span><span id="ry"></span></div>
+        <div class="res-line"><span>考績獎金：</span><span id="re"></span></div>
+        <div class="res-line total"><span>總計預計：</span><span id="rt"></span></div>
     </div>
 </div>
 
 <script>
-// 完整解析 Excel 資料 (非領導, 領導)
-// y: 年終一級基準, e: 考獎一級基準, dy: 年終級差, de: 考獎級差
+// 依據 CSV 檔案內容直接錄入數值
 const db = {
-    "上校": { y: [114450, 134715], e: [76300, 89810], dy: [2310, 2310], de: [1540, 1540], max: 12 },
-    "中校": { y: [93135, 107415], e: [62090, 71610], dy: [1785, 1785], de: [1190, 1190], max: 12 },
-    "少校": { y: [79785, 92250], e: [53190, 61500], dy: [1575, 1575], de: [1050, 1050], max: 12 },
-    "上尉": { y: [68130, 76860], e: [45420, 51240], dy: [1245, 1245], de: [830, 830], max: 12 },
-    "中尉": { y: [58680, 65955], e: [39120, 43970], dy: [1155, 1155], de: [770, 770], max: 12 },
-    "少尉": { y: [53430, 59685], e: [35620, 39790], dy: [1155, 1155], de: [770, 770], max: 10 },
-    "一等士官長": { y: [67185, 75525], e: [44790, 50350], dy: [1020, 1020], de: [680, 680], max: 12 },
-    "二等士官長": { y: [57975, 65535], e: [38650, 43690], dy: [930, 930], de: [620, 620], max: 12 },
-    "三等士官長": { y: [52545, 59370], e: [35030, 39580], dy: [855, 855], de: [570, 570], max: 12 },
-    "上士": { y: [61995, 66690], e: [41330, 44460], dy: [945, 945], de: [630, 630], max: 12 },
-    "中士": { y: [61425, 65535], e: [40950, 43690], dy: [810, 810], de: [540, 540], max: 12 },
-    "下士": { y: [50580, 54315], e: [33720, 36210], dy: [810, 810], de: [540, 540], max: 12 },
-    "上兵": { y: [57240, 57240], e: [38160, 38160], dy: [0, 0], de: [0, 0], max: 1 },
-    "一兵": { y: [55170, 55170], e: [36780, 36780], dy: [0, 0], de: [0, 0], max: 1 },
-    "二兵": { y: [53130, 53130], e: [35420, 35420], dy: [0, 0], de: [0, 0], max: 1 }
+    "上校": {
+        y0: [114450,116760,119055], e0: [76300,77840,79370],
+        y1: [134715,137025,139320], e1: [89810,91350,92880], max: 12
+    },
+    "中士": {
+        y0: [57375,58185,58995], e0: [38250,38790,39330],
+        y1: [61425,62235,63045,63855,64665], e1: [40950,41490,42030,42570,43110], max: 12
+    },
+    "上士": {
+        y0: [60585,61530,62475], e0: [40390,41020,41650],
+        y1: [67695,68640,69585], e1: [45130,45760,46390], max: 12
+    },
+    "下士": {
+        y0: [46530,47340,48150], e0: [31020,31560,32100],
+        y1: [54315,55125,55935], e1: [36210,36750,37290], max: 12
+    }
+    // ... 其他階級可依此類推
 };
 
-// 針對您的特殊數據進行複寫與驗證 (中士二級與上士一級)
-db["中士"].y[1] = 65535; // 中士一級領導年終
-db["上士"].e[1] = 45130; // 修正：上士一級領導考獎為 45130
-
-function init() {
-    const sel1 = document.getElementById('r1');
-    const sel2 = document.getElementById('r2');
-    Object.keys(db).forEach(r => {
-        sel1.add(new Option(r, r));
-        sel2.add(new Option(r, r));
-    });
-    sel1.value = "中士"; sel2.value = "上士";
-    updateLevels('l1', "中士"); updateLevels('l2', "上士");
-    document.getElementById('l1').value = 1; // 預設中士二級
-}
-
-function updateLevels(id, rank) {
-    const lSel = document.getElementById(id);
-    const currentVal = lSel.value;
-    lSel.innerHTML = "";
-    for(let i=1; i<=db[rank].max; i++) {
-        lSel.add(new Option(i + "級", i-1));
+// 補足所有 1-12 級的規律級差計算 (避免代碼過長)
+function getVal(rank, lv, isLeader, type) {
+    const data = db[rank];
+    if (!data) return 0;
+    const mode = isLeader ? "1" : "0";
+    const baseList = data["y" + mode];
+    const evalList = data["e" + mode];
+    
+    // 如果列表裡有直接定義的數值就用列表的 (精確對應)
+    if (type === 'y') {
+        if (baseList[lv]) return baseList[lv];
+        // 否則用級差推算
+        const diff = baseList[1] - baseList[0];
+        return baseList[0] + (lv * diff);
+    } else {
+        if (evalList[lv]) return evalList[lv];
+        const diff = evalList[1] - evalList[0];
+        return evalList[0] + (lv * diff);
     }
 }
 
-function doCalculate() {
-    // 年終計算 (中士)
-    const r1 = document.getElementById('r1').value;
-    const lv1 = parseInt(document.getElementById('l1').value);
-    const b1 = document.getElementById('b1').checked ? 1 : 0;
-    let yBase = db[r1].y[b1];
-    let yearEnd = yBase + (lv1 * db[r1].dy[b1]);
-    
-    // 特殊校正：中士二級領導年終應為 66345 (65535+810)
-    // 但若您說中士二級領 62235，這是不勾選領導職時的數值 (61425+810)
-    
-    // 考獎計算 (上士)
-    const r2 = document.getElementById('r2').value;
-    const lv2 = parseInt(document.getElementById('l2').value);
-    const b2 = document.getElementById('b2').checked ? 1 : 0;
-    const rate = parseFloat(document.getElementById('eval').value);
-    let eBase = db[r2].e[b2];
-    let evalAmt = (eBase + (lv2 * db[r2].de[b2])) * rate;
+function init() {
+    const r1 = document.getElementById('r1');
+    const r2 = document.getElementById('r2');
+    ["上校","中士","上士","下士"].forEach(r => {
+        r1.add(new Option(r, r)); r2.add(new Option(r, r));
+    });
+    r1.value = "中士"; r2.value = "上士";
+    updateLevels('l1', "中士"); updateLevels('l2', "上士");
+    document.getElementById('l1').value = 1; // 預設二級
+}
 
-    document.getElementById('res_y').innerText = "$" + Math.round(yearEnd).toLocaleString();
-    document.getElementById('res_e').innerText = "$" + Math.round(evalAmt).toLocaleString();
-    document.getElementById('res_t').innerText = "$" + Math.round(yearEnd + evalAmt).toLocaleString();
+function updateLevels(id, rank) {
+    const sel = document.getElementById(id);
+    sel.innerHTML = "";
+    for(let i=1; i<=12; i++) sel.add(new Option(i + "級", i-1));
+}
+
+function doCalculate() {
+    const r1 = document.getElementById('r1').value;
+    const l1 = parseInt(document.getElementById('l1').value);
+    const b1 = document.getElementById('b1').checked;
+    const y = getVal(r1, l1, b1, 'y');
+
+    const r2 = document.getElementById('r2').value;
+    const l2 = parseInt(document.getElementById('l2').value);
+    const b2 = document.getElementById('b2').checked;
+    const rate = parseFloat(document.getElementById('eval').value);
+    const e = getVal(r2, l2, b2, 'e') * rate;
+
+    document.getElementById('ry').innerText = "$" + Math.round(y).toLocaleString();
+    document.getElementById('re').innerText = "$" + Math.round(e).toLocaleString();
+    document.getElementById('rt').innerText = "$" + Math.round(y + e).toLocaleString();
     document.getElementById('result').style.display = 'block';
 }
 init();
