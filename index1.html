@@ -3,267 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>115年獎金試算系統</title>
+    <title>115年獎金計算機 - 神秘版</title>
     <style>
         :root {
-            /* 神秘感配色：深邃藍黑 + 螢光綠 */
-            --bg: #0b0f1a;
-            --card-bg: #161c2d;
-            --primary: #00f2ff; /* 改用青色增加科技神秘感 */
-            --accent: #7000ff;  /* 紫色漸層點綴 */
-            --text-main: #ffffff;
-            --text-dim: #8ba1b7;
-            --input-bg: #0f1422;
-            --border: #2d3748;
+            --bg: #030712;
+            --card-bg: #111827;
+            --primary: #10b981; /* 螢光綠 */
+            --accent: #6366f1;  /* 神秘紫藍 */
+            --text-main: #f9fafb;
+            --text-dim: #9ca3af;
+            --border: #1f2937;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, system-ui, sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
             margin: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
-            padding: 20px;
-            min-height: 100vh;
         }
 
-        .wrapper {
+        .container {
             width: 100%;
-            max-width: 450px; /* 參考範例網頁寬度 */
+            max-width: 440px;
         }
 
         header {
-            text-align: center;
             margin-bottom: 24px;
+            text-align: left;
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
-            margin: 0;
             background: linear-gradient(to right, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin: 0;
         }
 
-        /* 核心卡片樣式 - 完全復刻範例結構 */
         .card {
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 24px;
             border: 1px solid var(--border);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .section-title {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 20px;
             color: var(--primary);
-            display: flex;
-            align-items: center;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .field {
+        .row {
             margin-bottom: 16px;
         }
 
-        .field label {
+        label {
             display: block;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-dim);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
-        select {
+        select, .input-mock {
             width: 100%;
-            height: 48px;
-            background: var(--input-bg);
+            background: #1f2937;
             border: 1px solid var(--border);
             border-radius: 12px;
             color: var(--text-main);
-            padding: 0 16px;
+            padding: 12px;
             font-size: 16px;
             outline: none;
-            transition: border-color 0.2s;
             appearance: none;
         }
 
-        select:focus {
-            border-color: var(--primary);
+        /* 滑桿樣式 */
+        .slider-container {
+            margin: 10px 0;
+        }
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+            background: #1f2937;
+            height: 6px;
+            border-radius: 3px;
         }
 
-        /* 勾選框復刻 */
-        .checkbox-group {
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* 切換按鈕 (考績等第) */
+        .toggle-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background: #1f2937;
+            padding: 4px;
+            border-radius: 14px;
+        }
+
+        .toggle-btn {
+            padding: 8px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: var(--primary);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .checkbox-row {
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 14px;
+            margin-top: 10px;
             cursor: pointer;
-            margin-top: 20px;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
         }
 
         input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             accent-color: var(--primary);
         }
 
-        /* 按鈕樣式 - 參考範例高度與圓角 */
-        button {
-            width: 100%;
-            height: 56px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #000;
-            border: none;
+        /* 結果展示區 */
+        .result-panel {
+            background: linear-gradient(145deg, #111827, #030712);
+            border: 1px solid var(--primary);
+            border-radius: 24px;
+            padding: 24px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .res-box {
+            background: rgba(255,255,255,0.05);
+            padding: 12px;
             border-radius: 16px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.1s, opacity 0.2s;
         }
 
-        button:active {
-            transform: scale(0.98);
-        }
+        .res-label { font-size: 12px; color: var(--text-dim); }
+        .res-val { font-size: 16px; font-weight: bold; margin-top: 4px; color: var(--text-main); }
 
-        /* 結果顯示區塊 - 復刻範例的動畫感 */
-        #result-area {
-            display: none;
-            margin-top: 24px;
-            animation: slideUp 0.4s ease-out;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .result-card {
-            background: rgba(0, 242, 255, 0.05);
-            border: 1px dashed var(--primary);
-            border-radius: 16px;
-            padding: 20px;
-        }
-
-        .result-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 15px;
-            color: var(--text-dim);
-        }
-
-        .result-row span:last-child {
-            color: var(--text-main);
-            font-weight: 600;
-        }
-
-        .total-row {
-            border-top: 1px solid var(--border);
-            margin-top: 15px;
-            padding-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .total-label {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .total-amount {
-            font-size: 26px;
+        .total-val {
+            font-size: 32px;
             font-weight: 800;
             color: var(--primary);
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+            margin: 8px 0;
         }
 
-        .hint {
-            font-size: 12px;
-            color: #ff4d4d;
-            margin-top: 10px;
-            display: none;
-        }
-
-        footer {
+        .footer {
             text-align: center;
-            margin-top: 30px;
+            padding: 24px;
+            font-size: 12px;
             color: var(--text-dim);
-            font-size: 13px;
+        }
+
+        .special-hint {
+            color: #fbbf24;
+            font-size: 12px;
+            margin-top: 8px;
+            display: none;
         }
     </style>
 </head>
 <body>
 
-<div class="wrapper">
+<div class="container">
     <header>
-        <h1>獎金試算系統</h1>
+        <h1>獎金計算機 115 Ver.</h1>
     </header>
 
     <div class="card">
-        <div class="section-title">年終獎金設定</div>
-        <div class="field">
-            <label>生效階級</label>
-            <select id="r1" onchange="updateLevels('l1', this.value)"></select>
+        <div class="section-title">年終獎金 (1.5個月)</div>
+        <div class="row">
+            <label>計算階級</label>
+            <select id="r1" onchange="syncData()"></select>
         </div>
-        <div class="field">
+        <div class="row">
             <label>目前俸級</label>
-            <select id="l1"></select>
+            <select id="l1" onchange="syncData()"></select>
         </div>
-        <div class="checkbox-group" onclick="toggleCheck('b1')">
-            <input type="checkbox" id="b1" checked>
-            <span>支領領導加給</span>
+        <div class="slider-container">
+            <label>領取比例 (<span id="ratio-text">12</span>/12)</label>
+            <input type="range" id="ratio-slider" min="1" max="12" value="12" oninput="syncData()">
         </div>
+        <label class="checkbox-row">
+            <input type="checkbox" id="b1" checked onchange="syncData()"> 支領領導加給
+        </label>
     </div>
 
     <div class="card">
-        <div class="section-title">考績獎金設定</div>
-        <div class="field">
-            <label>生效階級</label>
-            <select id="r2" onchange="updateLevels('l2', this.value)"></select>
+        <div class="section-title">考績獎金</div>
+        <div class="row">
+            <label>考績階級</label>
+            <select id="r2" onchange="syncData()"></select>
         </div>
-        <div class="field">
-            <label>目前俸級</label>
-            <select id="l2"></select>
+        <div class="row">
+            <label>考績俸級</label>
+            <select id="l2" onchange="syncData()"></select>
         </div>
-        <div class="checkbox-group" onclick="toggleCheck('b2')">
-            <input type="checkbox" id="b2" checked>
-            <span>支領領導加給</span>
+        <div class="row">
+            <label>考核等第</label>
+            <div class="toggle-group">
+                <div id="eval-1" class="toggle-btn active" onclick="setEval(1)">甲等</div>
+                <div id="eval-05" class="toggle-btn" onclick="setEval(0.5)">乙等</div>
+            </div>
         </div>
-        <div id="bonus_hint" class="hint">系統偵測：已達最高俸級，考績獎金將以 2 個月計。</div>
+        <label class="checkbox-row">
+            <input type="checkbox" id="b2" checked onchange="syncData()"> 支領領導加給
+        </label>
+        <div id="max-hint" class="special-hint">✨ 已達該階最高俸級，考績獎金加倍 (2.0 個月)</div>
     </div>
 
-    <button onclick="calculate()">開始試算</button>
-
-    <div id="result-area">
-        <div class="result-card">
-            <div class="result-row">
-                <span>預估年終獎金 (1.5個月)</span>
-                <span id="res_y">-</span>
+    <div class="result-panel">
+        <div class="res-label">預估發放總額</div>
+        <div class="total-val" id="total-val">$0</div>
+        
+        <div class="result-grid">
+            <div class="res-box">
+                <div class="res-label">年終金額</div>
+                <div class="res-val" id="res-y">$0</div>
             </div>
-            <div class="result-row">
-                <span>預估考績獎金</span>
-                <span id="res_e">-</span>
-            </div>
-            <div class="total-row">
-                <span class="total-label">總計預估額</span>
-                <span class="total-amount" id="res_t">-</span>
+            <div class="res-box">
+                <div class="res-label">考績金額</div>
+                <div class="res-val" id="res-e">$0</div>
             </div>
         </div>
     </div>
 
-    <footer>
-        <p>© 115年 國軍獎金試算工具</p>
-    </footer>
+    <div class="footer">
+        本試算僅供參考，實際金額請以發放薪資條為準
+    </div>
 </div>
 
 <script>
-    // 數據邏輯 (與先前提供的 database 一致)
+    // 數據庫 (與之前提供的一致)
     const database = {
         "上校": {
             y_lead: [134715, 137025, 139320, 141615, 143910, 146205, 148500, 150810, 153105, 155400, 157695, 160005],
@@ -343,6 +344,8 @@
         }
     };
 
+    let currentEval = 1.0;
+
     function init() {
         const r1 = document.getElementById('r1'), r2 = document.getElementById('r2');
         Object.keys(database).forEach(rank => {
@@ -351,51 +354,75 @@
         });
         r1.value = "上士"; r2.value = "上士";
         updateLevels('l1', "上士"); updateLevels('l2', "上士");
+        syncData();
     }
 
     function updateLevels(selectId, rank) {
         const lSelect = document.getElementById(selectId);
-        lSelect.innerHTML = "";
         const data = database[rank].y_lead || database[rank].y_none;
+        lSelect.innerHTML = "";
         data.forEach((_, i) => lSelect.add(new Option((i+1) + " 級碼", i)));
     }
 
-    function toggleCheck(id) {
-        const cb = document.getElementById(id);
-        cb.checked = !cb.checked;
+    // 模擬 Vercel 的切換功能
+    function setEval(val) {
+        currentEval = val;
+        document.getElementById('eval-1').classList.toggle('active', val === 1);
+        document.getElementById('eval-05').classList.toggle('active', val === 0.5);
+        syncData();
     }
 
-    function calculate() {
-        const r1 = document.getElementById('r1').value, lv1 = parseInt(document.getElementById('l1').value), isLead1 = document.getElementById('b1').checked;
-        const r2 = document.getElementById('r2').value, lv2 = parseInt(document.getElementById('l2').value), isLead2 = document.getElementById('b2').checked;
-        
-        // 年終計算
-        const yearEnd = (isLead1 && database[r1].y_lead) ? database[r1].y_lead[lv1] : database[r1].y_none[lv1];
+    function syncData() {
+        // 取得年終數據
+        const rank1 = document.getElementById('r1').value;
+        const lv1 = parseInt(document.getElementById('l1').value);
+        const isLead1 = document.getElementById('b1').checked;
+        const ratio = parseInt(document.getElementById('ratio-slider').value);
+        document.getElementById('ratio-text').innerText = ratio;
 
-        // 考績倍率判斷
+        // 當階級改變時自動更新級碼下拉選單
+        const l1Count = document.getElementById('l1').childElementCount;
+        const dataCount1 = (database[rank1].y_lead || database[rank1].y_none).length;
+        if (l1Count !== dataCount1) updateLevels('l1', rank1);
+
+        // 取得考績數據
+        const rank2 = document.getElementById('r2').value;
+        const lv2 = parseInt(document.getElementById('l2').value);
+        const isLead2 = document.getElementById('b2').checked;
+
+        const l2Count = document.getElementById('l2').childElementCount;
+        const dataCount2 = (database[rank2].y_lead || database[rank2].y_none).length;
+        if (l2Count !== dataCount2) updateLevels('l2', rank2);
+
+        calculate(rank1, lv1, isLead1, ratio, rank2, lv2, isLead2);
+    }
+
+    function calculate(r1, lv1, isL1, ratio, r2, lv2, isL2) {
+        // 年終計算
+        const yBase = (isL1 && database[r1].y_lead) ? database[r1].y_lead[lv1] : database[r1].y_none[lv1];
+        const yResult = Math.round(yBase * (ratio / 12));
+
+        // 考績計算 (最高俸級判定)
         const maxLv = (database[r2].y_lead || database[r2].y_none).length - 1;
-        let evalRate = 1.0;
+        let bonusMultiplier = currentEval; 
+        
         if (lv2 === maxLv) {
-            evalRate = 2.0;
-            document.getElementById('bonus_hint').style.display = 'block';
+            bonusMultiplier = currentEval * 2; // 最高俸級加倍
+            document.getElementById('max-hint').style.display = 'block';
         } else {
-            document.getElementById('bonus_hint').style.display = 'none';
+            document.getElementById('max-hint').style.display = 'none';
         }
 
-        // 考績金額計算
-        const baseEval = (isLead2 && database[r2].e_lead) ? database[r2].e_lead[lv2] : database[r2].e_none[lv2];
-        const finalEval = baseEval * evalRate;
+        const eBase = (isL2 && database[r2].e_lead) ? database[r2].e_lead[lv2] : database[r2].e_none[lv2];
+        const eResult = Math.round(eBase * bonusMultiplier);
 
-        // 更新 UI
-        document.getElementById('res_y').innerText = "$" + yearEnd.toLocaleString();
-        document.getElementById('res_e').innerText = "$" + finalEval.toLocaleString() + (evalRate > 1 ? " (2個月)" : " (1個月)");
-        document.getElementById('res_t').innerText = "$" + (yearEnd + finalEval).toLocaleString();
-        
-        document.getElementById('result-area').style.display = 'block';
+        // UI 更新
+        document.getElementById('res-y').innerText = "$" + yResult.toLocaleString();
+        document.getElementById('res-e').innerText = "$" + eResult.toLocaleString();
+        document.getElementById('total-val').innerText = "$" + (yResult + eResult).toLocaleString();
     }
 
-    init();
+    window.onload = init;
 </script>
-
 </body>
 </html>
