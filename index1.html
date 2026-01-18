@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>115年國軍獎金試算</title>
+    <title>115年國軍獎金試算系統</title>
+    <p>依據國軍114年 年終考績獎金金額表</p
     <style>
         :root {
             --bg: #0a0e17;
@@ -18,9 +19,9 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, sans-serif; }
         body { background: var(--bg); color: var(--text); margin: 0; padding-bottom: 160px; }
 
-        /* Header & Tabs */
         .header { padding: 30px 20px 10px; background: linear-gradient(to bottom, #1e293b, var(--bg)); }
         .header h1 { font-size: 22px; margin: 0; font-weight: 800; }
+
         .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 15px; background: var(--bg); position: sticky; top: 0; z-index: 10; }
         .tab { flex: 1; text-align: center; padding: 15px; color: var(--text-dim); cursor: pointer; position: relative; font-size: 15px; }
         .tab.active { color: var(--accent); font-weight: bold; }
@@ -30,18 +31,15 @@
         .container.active { display: block; }
         .label { font-size: 14px; color: var(--text-dim); margin: 20px 0 8px; font-weight: 500; }
 
-        /* Input & Select */
-        .input-box { width: 100%; background: var(--card); border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; font-size: 16px; outline: none; margin-bottom: 10px; }
+        .input-box { width: 100%; background: var(--card); border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; font-size: 16px; outline: none; margin-bottom: 10px; appearance: none; }
         .input-group { position: relative; }
         .input-group::before { content: "$"; position: absolute; left: 15px; top: 15px; color: var(--text-dim); }
         .input-group input { padding-left: 30px; }
 
-        /* Alert Box */
         .alert { background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); padding: 12px; border-radius: 10px; color: #a5b4fc; font-size: 13px; display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
 
-        /* Toggle & List (Same as before) */
         .btn-group { display: flex; background: #1e2638; padding: 4px; border-radius: 12px; gap: 4px; }
-        .btn-item { flex: 1; text-align: center; padding: 12px; border-radius: 10px; cursor: pointer; color: var(--text-dim); font-size: 14px; }
+        .btn-item { flex: 1; text-align: center; padding: 12px; border-radius: 10px; cursor: pointer; color: var(--text-dim); font-size: 14px; transition: 0.2s; }
         .btn-item.active { background: var(--active-bg); color: white; font-weight: bold; }
 
         .list-container { background: var(--card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
@@ -51,7 +49,6 @@
         .list-item.selected { background: rgba(0, 242, 255, 0.08); border-left: 4px solid var(--accent); }
         .badge { background: #f59e0b; color: black; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold; }
 
-        /* Eval Buttons */
         .eval-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .eval-card { background: var(--card); border: 1px solid var(--border); padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; }
         .eval-card.active { border-color: var(--accent); background: rgba(0, 242, 255, 0.05); }
@@ -59,7 +56,6 @@
         .eval-name { font-size: 18px; font-weight: bold; display: block; }
         .eval-sub { font-size: 12px; color: var(--text-dim); }
 
-        /* Footer Sticky Bar */
         .footer-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #0f172a; padding: 20px; border-top: 1px solid var(--border); backdrop-filter: blur(15px); z-index: 100; }
         .monthly-pay { font-size: 12px; color: var(--text-dim); display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
         .total-row { display: flex; justify-content: space-between; align-items: flex-end; }
@@ -100,20 +96,16 @@
 </div>
 
 <div id="page1" class="container">
-    <div class="alert">
-        <span>ℹ️ 請輸入薪資條上的金額進行計算</span>
-    </div>
+    <div class="alert"><span>ℹ️ 請輸入薪資條上的金額進行計算</span></div>
     <div class="label">本俸</div>
     <div class="input-group"><input type="number" id="custom-base" class="input-box" placeholder="0" oninput="calculateCustom()"></div>
-    
     <div class="label">專業加給</div>
     <div class="input-group"><input type="number" id="custom-pro" class="input-box" placeholder="0" oninput="calculateCustom()"></div>
-    
     <div class="label">主管職務加給</div>
     <div class="input-group"><input type="number" id="custom-lead" class="input-box" placeholder="0" oninput="calculateCustom()"></div>
 </div>
 
-<div class="container active" style="display:block;">
+<div class="container active" style="display:block; margin-top:10px;">
     <div class="label">考績獎金設定</div>
     <div class="eval-grid">
         <div id="ev-1" class="eval-card active" onclick="changeEval(1.0)">
@@ -128,15 +120,9 @@
 </div>
 
 <div class="footer-bar">
-    <div class="monthly-pay">
-        <span>本俸+專加+主加</span>
-        <span>月支: $<span id="footer-monthly">0</span></span>
-    </div>
+    <div class="monthly-pay"><span>本俸+專加+主加</span><span>月支: $<span id="footer-monthly">0</span></span></div>
     <div class="total-row">
-        <div>
-            <div style="font-size: 13px; color: var(--text-dim);">預估領取總額</div>
-            <div class="total-amount"><span>$</span><span id="final-total">0</span></div>
-        </div>
+        <div><div style="font-size: 12px; color: var(--text-dim);">預估領取總額</div><div class="total-amount"><span>$</span><span id="final-total">0</span></div></div>
         <div class="breakdown">
             <div class="b-row"><span>年終 (1.5)</span> <span id="final-y" class="b-y">$0</span></div>
             <div class="b-row"><span>考績 (<span id="ev-rate-text">1.0</span>)</span> <span id="final-e" class="b-e">$0</span></div>
@@ -146,18 +132,22 @@
 
 <script>
     const db = {
+        "上校": { y_l:[134715,137025,139320,141615,143910,146205,148500,150810,153105,155400,157695,160005], e_l:[89810,91350,92880,94410,95940,97470,99010,100540,102070,103600,105130,106670], y_n:[114450,116760,119055,121350,123645,125940,128250,130545,132840,135150,137430,139740], e_n:[76300,77840,79370,80900,82430,83960,85500,87030,88560,90090,91620,93160] },
         "中校": { y_l:[112755,114480,116205,117930,119640,121365,123090,124815,126540,128265,129990,131715], e_l:[75170,76320,77470,78620,79760,80910,82060,83210,84360,85510,86660,87810], y_n:[99435,101160,102885,104610,106320,108045,109770,111495,113220,114945,116670,118395], e_n:[66290,67440,68590,69740,70880,72030,73180,74330,75480,76630,77780,78930] },
         "少校": { y_l:[95370,97095,98820,100545,102270,103995,105720,107445,109155,110880,112605,114330], e_l:[63580,64730,65880,67030,68180,69330,70480,71630,72770,73920,75070,76220], y_n:[86475,88200,89925,91650,93375,95100,96825,98550,100260,101985,103710,105435], e_n:[57650,58800,59950,61100,62250,63400,64550,65700,66840,67990,69140,70290] },
-        "上士": { y_l:[67695,68850,69990,71145,72300,73440,74595,75735,76890,78045,79185,80340], e_l:[45130,45900,46660,47430,48200,48960,49730,50490,51260,52030,52790,53560], y_n:[62550,63705,64845,66000,67155,68295,69450,70590,71745,72900,74040,75195], e_none:[41700,42470,43230,44000,44770,45530,46300,47060,47830,48600,49360,50130] },
+        "上尉": { y_l:[86445,88170,89895,91620,93345,95070,96795,98520,100230,101955,103680,105405], e_l:[57630,58780,59930,61080,62230,63380,64530,65680,66820,67970,69120,70270], y_n:[79140,80865,82590,84315,86040,87765,89490,91215,92925,94650,96375,98100], e_n:[52760,53910,55060,56210,57360,58510,59660,60810,61950,63100,64250,65400] },
+        "一等士官長": { y_l:[87195,88350,89490,90645,91800,92940,94095,95235,96390,97545,98685,99840,100980,102135,103290,104430,105585,106725,107880,109035], e_l:[58130,58900,59660,60430,61200,61960,62730,63490,64260,65030,65790,66560,67320,68090,68860,69620,70390,71150,71920,72690], y_n:[80730,81885,83025,84180,85335,86475,87630,88770,89925,91080,92220,93375,94515,95670,96825,97965,99120,100260,101415,102570], e_n:[53820,54590,55350,56120,56890,57650,58420,59180,59950,60720,61480,62250,63010,63780,64550,65310,66080,66840,67610,68380] },
+        "二等士官長": { y_l:[79860,81015,82155,83310,84465,85605,86760,87900,89055,90210,91350,92505,93645,94800,95955,97095,98250,99390,100545,101700], e_l:[53240,54010,54770,55540,56310,57070,57840,58600,59370,60140,60900,61670,62430,63200,63970,64730,65500,66260,67030,67800], y_n:[73395,74550,75690,76845,78000,79140,80295,81435,82590,83745,84885,86040,87180,88335,89490,90630,91785,92925,94080,95235], e_n:[48930,49700,50460,51230,52000,52760,53530,54290,55060,55830,56590,57360,58120,58890,59660,60420,61190,61950,62720,63490] },
+        "三等士官長": { y_l:[73170,74325,75480,76620,77775,78915,80070,81225,82365,83520,84660,85815,86970,88110,89265,90405,91560,92715,93855,95010], e_l:[48780,49550,50320,51080,51850,52610,53380,54150,54910,55680,56440,57210,57980,58740,59510,60270,61040,61810,62570,63340], y_n:[66705,67860,69015,70155,71310,72450,73605,74760,75900,77055,78195,79350,80505,81645,82800,83940,85095,86250,87390,88545], e_n:[44470,45240,46010,46770,47540,48300,49070,49840,50600,51370,52130,52900,53670,54430,55200,55960,56730,57500,58260,59030] },
+        "上士": { y_l:[67695,68850,69990,71145,72300,73440,74595,75735,76890,78045,79185,80340], e_l:[45130,45900,46660,47430,48200,48960,49730,50490,51260,52030,52790,53560], y_n:[62550,63705,64845,66000,67155,68295,69450,70590,71745,72900,74040,75195], e_n:[41700,42470,43230,44000,44770,45530,46300,47060,47830,48600,49360,50130] },
+        "中士": { y_l:[61080,62235,63375,64530,65685,66825,67980,69120,70275,71430,72570,73725], e_l:[40720,41490,42250,43020,43790,44550,45320,46080,46850,47620,48380,49150], y_n:[56715,57870,59010,60165,61320,62460,63615,64755,65910,67065,68205,69360], e_n:[37810,38580,39340,40110,40880,41640,42410,43170,43940,44710,45470,46240] },
+        "下士": { y_l:[54315,55125,55935,56745,57555,58380,59190,60330,61485,62625,63780,64935], e_l:[36210,36750,37290,37830,38370,38920,39460,40220,40990,41750,42520,43290], y_n:[50580,51390,52200,53010,53820,54645,55455,56595,57750,58890,60045,61200], e_n:[33720,34260,34800,35340,35880,36430,36970,37730,38500,39260,40030,40800] },
         "上兵": { y_n:[46275,47535,48345,49155,49965,50775], e_n:[30850,31690,32230,32770,33310,33850] },
         "一兵": { y_n:[42960], e_n:[28640] },
         "二兵": { y_n:[39495], e_n:[26330] }
     };
 
-    let activeTab = 0;
-    let isLead = false;
-    let selectedLv = 0;
-    let evalMultiplier = 1.0;
+    let activeTab = 0, isLead = false, selectedLv = 0, evalMultiplier = 1.0;
 
     function switchTab(t) {
         activeTab = t;
@@ -214,29 +204,23 @@
     function calculate() {
         const rank = document.getElementById('rank').value;
         const dataY = (isLead && db[rank].y_l) ? db[rank].y_l : db[rank].y_n;
-        const dataE = (isLead && db[rank].e_l) ? db[rank].e_l : (db[rank].e_n || db[rank].e_none);
+        const dataE = (isLead && db[rank].e_l) ? db[rank].e_l : db[rank].e_n;
         
         const yVal = dataY[selectedLv];
         const monthlyPay = Math.round(yVal / 1.5);
-        
         let actualEval = evalMultiplier;
         if (selectedLv === dataY.length - 1 && dataY.length > 1) actualEval = evalMultiplier * 2;
-
         const eVal = Math.round(dataE[selectedLv] * actualEval);
 
         updateUI(monthlyPay, yVal, eVal);
     }
 
     function calculateCustom() {
-        const base = Number(document.getElementById('custom-base').value) || 0;
-        const pro = Number(document.getElementById('custom-pro').value) || 0;
-        const lead = Number(document.getElementById('custom-lead').value) || 0;
-
-        const monthlyPay = base + pro + lead;
-        const yVal = Math.round(monthlyPay * 1.5);
-        const eVal = Math.round(monthlyPay * evalMultiplier);
-
-        updateUI(monthlyPay, yVal, eVal);
+        const b = Number(document.getElementById('custom-base').value) || 0;
+        const p = Number(document.getElementById('custom-pro').value) || 0;
+        const l = Number(document.getElementById('custom-lead').value) || 0;
+        const m = b + p + l;
+        updateUI(m, Math.round(m*1.5), Math.round(m*evalMultiplier));
     }
 
     function updateUI(m, y, e) {
