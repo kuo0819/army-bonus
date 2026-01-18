@@ -18,29 +18,25 @@
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, "Microsoft JhengHei", sans-serif; }
-        body { background: var(--bg); color: var(--text); margin: 0; padding-bottom: 260px; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); margin: 0; padding-bottom: 280px; overflow-x: hidden; }
 
+        /* Header */
         .header { padding: 35px 20px 15px; background: linear-gradient(to bottom, #1e293b, var(--bg)); text-align: center; }
         .header h1 { font-size: 24px; margin: 0; font-weight: 800; letter-spacing: 2px; text-shadow: 0 0 10px rgba(0,242,255,0.3); }
         .header .sub-ref { color: var(--accent); font-size: 13px; margin-top: 8px; opacity: 0.8; }
 
-        .tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 10; }
-        .tab { flex: 1; text-align: center; padding: 15px; color: var(--text-dim); cursor: pointer; font-size: 15px; border-bottom: 3px solid transparent; }
-        .tab.active { color: var(--accent); font-weight: bold; border-bottom: 3px solid var(--accent); }
-
-        .container { padding: 16px; display: none; }
-        .container.active { display: block; }
-        
+        .container { padding: 16px; }
         .label { font-size: 14px; color: var(--text-dim); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
-        .label b { color: var(--text); }
-        .input-box { width: 100%; background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; font-size: 15px; margin-bottom: 12px; outline: none; transition: 0.3s; }
-        .input-box:focus { border-color: var(--accent); }
+        .label b { color: var(--accent); }
+        .input-box { width: 100%; background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; font-size: 15px; margin-bottom: 12px; outline: none; }
 
+        /* 職務切換 */
         .role-selector { display: flex; background: #1e2638; padding: 4px; border-radius: 10px; margin-bottom: 15px; }
         .role-btn { flex: 1; text-align: center; padding: 10px; border-radius: 8px; cursor: pointer; color: var(--text-dim); font-size: 14px; transition: 0.3s; }
-        .role-btn.active { background: var(--lead-color); color: white; font-weight: bold; }
-        .role-btn.active.non-lead { background: var(--active-bg); }
+        .role-btn.active { background: var(--lead-color); color: white; font-weight: bold; box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+        .role-btn.active.non-lead { background: var(--active-bg); box-shadow: 0 0 10px rgba(45, 58, 84, 0.3); }
 
+        /* 晉升卡片 */
         .promo-card { background: rgba(251, 191, 36, 0.08); border: 1px dashed var(--promo-color); padding: 12px; border-radius: 12px; margin: 15px 0; display: flex; justify-content: space-between; align-items: center; }
         .switch { position: relative; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -49,42 +45,68 @@
         input:checked + .slider { background: var(--promo-color); }
         input:checked + .slider:before { transform: translateX(20px); }
 
+        /* 清單樣式 */
         .list-container { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 15px; }
         .scroll-area { max-height: 120px; overflow-y: auto; }
         .list-item { display: flex; justify-content: space-between; padding: 12px 15px; border-bottom: 1px solid var(--border); font-size: 14px; cursor: pointer; }
         .list-item.selected { background: rgba(0, 242, 255, 0.1); border-left: 4px solid var(--accent); color: var(--accent); }
 
+        /* 考績按鈕 */
+        .eval-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .eval-card { background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 10px; text-align: center; cursor: pointer; }
+        .eval-card.active { border-color: var(--accent); background: rgba(0, 242, 255, 0.05); color: var(--accent); }
+
+        /* Footer */
         .footer-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #0f172a; padding: 15px 20px; border-top: 1px solid var(--border); z-index: 100; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
         .total-amount { font-size: 32px; font-weight: 800; color: white; }
         .total-amount span { color: var(--accent); font-size: 20px; margin-right: 5px; }
-        
-        .eval-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .eval-card { background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 10px; text-align: center; }
-        .eval-card.active { border-color: var(--accent); background: rgba(0, 242, 255, 0.05); }
 
-        .signature-box { margin-top: 15px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
-        .author-name { font-size: 14px; color: var(--accent); font-weight: 600; letter-spacing: 1px; }
+        /* 超酷炫監製人樣式 */
+        .author-section { margin-top: 15px; text-align: center; }
+        .signature-box {
+            position: relative;
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, rgba(0, 242, 255, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%);
+            border: 1px solid rgba(0, 242, 255, 0.4);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.15);
+        }
+        .signature-box::before { content: ""; position: absolute; top: 0; left: 0; width: 8px; height: 8px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+        .signature-box::after { content: ""; position: absolute; bottom: 0; right: 0; width: 8px; height: 8px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+        
+        .laser-scan {
+            position: absolute;
+            top: -100%; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(to bottom, transparent, rgba(0, 242, 255, 0.3), transparent);
+            animation: scan 2.5s infinite linear;
+        }
+        @keyframes scan { 0% { top: -50%; } 100% { top: 150%; } }
+
+        .author-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 4px; }
+        .author-name-wrap { display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .author-name { font-size: 18px; color: #fff; font-weight: 900; text-shadow: 0 0 10px var(--accent); letter-spacing: 1px; }
+        .verified-badge { font-size: 9px; background: var(--accent); color: #000; padding: 1px 6px; border-radius: 2px; font-weight: bold; transform: skewX(-15deg); }
+        .auth-code { font-size: 8px; color: var(--accent); margin-top: 6px; opacity: 0.5; font-family: monospace; letter-spacing: 1px; }
+
     </style>
 </head>
 <body>
 
 <div class="header">
     <h1>115年國軍獎金試算</h1>
-    <div class="sub-ref">依據國軍114年年終考績獎金表</div>
+    <div class="sub-ref">依據國軍 114 年度考績獎金表</div>
 </div>
 
-<div class="tabs">
-    <div class="tab active">🔍 職階對照試算</div>
-</div>
-
-<div class="container active">
+<div class="container">
     <div class="label">職務加給性質</div>
     <div class="role-selector">
         <div id="role-n" class="role-btn active non-lead" onclick="setLead(false)">非領導職</div>
         <div id="role-l" class="role-btn" onclick="setLead(true)">領導職 (主管)</div>
     </div>
 
-    <div class="label">1. 考績獎金判定 (舊階：<b id="display-rank-e">中士</b>)</div>
+    <div class="label">1. 考績獎金計算 (舊階：<b id="display-rank-e">中士</b>)</div>
     <select id="rank-e" class="input-box" onchange="onRankEChange()"></select>
     <div class="list-container">
         <div class="scroll-area" id="list-e"></div>
@@ -92,14 +114,14 @@
 
     <div class="promo-card">
         <div>
-            <div style="font-weight:bold; color:var(--promo-color);">跨年晉升模式</div>
-            <div style="font-size:11px;">開啟後可分別計算不同階級</div>
+            <div style="font-weight:bold; color:var(--promo-color);">跨年晉升 / 階級異動</div>
+            <div style="font-size:11px;">115/01/01 晉升者請開啟</div>
         </div>
         <label class="switch"><input type="checkbox" id="promo-mode" checked onchange="togglePromo()"><span class="slider"></span></label>
     </div>
 
     <div id="y-section">
-        <div class="label" style="color:var(--accent)">2. 年終獎金判定 (新階：<b id="display-rank-y">上士</b>)</div>
+        <div class="label" style="color:var(--accent)">2. 年終獎金計算 (新階：<b id="display-rank-y">上士</b>)</div>
         <select id="rank-y" class="input-box" onchange="onRankYChange()"></select>
         <div class="list-container">
             <div class="scroll-area" id="list-y"></div>
@@ -116,7 +138,7 @@
 <div class="footer-bar">
     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
         <div>
-            <div style="font-size: 11px; color: var(--text-dim);" id="footer-note">正在計算結果...</div>
+            <div style="font-size: 11px; color: var(--text-dim);" id="footer-note">試算載入中...</div>
             <div class="total-amount"><span>$</span><span id="final-total">0</span></div>
         </div>
         <div style="text-align:right">
@@ -124,9 +146,17 @@
             <div style="font-size:13px; color:var(--promo-color)">考績 <span id="final-e" style="font-weight:bold">$0</span></div>
         </div>
     </div>
-    <div class="signature-box">
-        <div style="font-size:10px; color:var(--text-dim)">系統開發認證</div>
-        <div class="author-name">上士 郭俊廷 監製</div>
+
+    <div class="author-section">
+        <div class="signature-box">
+            <div class="laser-scan"></div>
+            <span class="author-label">Digital Authentication</span>
+            <div class="author-name-wrap">
+                <span class="author-name">上士 郭俊廷</span>
+                <span class="verified-badge">已認證</span>
+            </div>
+            <div class="auth-code">SEC-ID: GJT-MIL-PRO-VERIFIED</div>
+        </div>
     </div>
 </div>
 
@@ -136,8 +166,6 @@
         "中校": { y_l:[112755,114480,116205,117930,119640,121365,123090,124815,126540,128265,129990,131715], e_l:[75170,76320,77470,78620,79760,80910,82060,83210,84360,85510,86660,87810], y_n:[99435,101160,102885,104610,106320,108045,109770,111495,113220,114945,116670,118395], e_n:[66290,67440,68590,69740,70880,72030,73180,74330,75480,76630,77780,78930] },
         "少校": { y_l:[95370,97095,98820,100545,102270,103995,105720,107445,109155,110880,112605,114330], e_l:[63580,64730,65880,67030,68180,69330,70480,71630,72770,73920,75070,76220], y_n:[86475,88200,89925,91650,93375,95100,96825,98550,100260,101985,103710,105435], e_n:[57650,58800,59950,61100,62250,63400,64550,65700,66840,67990,69140,70290] },
         "上尉": { y_l:[86445,88170,89895,91620,93345,95070,96795,98520,100230,101955,103680,105405], e_l:[57630,58780,59930,61080,62230,63380,64530,65680,66820,67970,69120,70270], y_n:[79140,80865,82590,84315,86040,87765,89490,91215,92925,94650,96375,98100], e_n:[52760,53910,55060,56210,57360,58510,59660,60810,61950,63100,64250,65400] },
-        "中尉": { y_l:[75825,77550,79275,81000,82725,84450,86175,87900,89610,91335], e_l:[50550,51700,52850,54000,55150,56300,57450,58600,59740,60890], y_n:[68520,70245,71970,73695,75420,77145,78870,80595,82305,84030], e_n:[45680,46830,47980,49130,50280,51430,52580,53730,54870,56020] },
-        "少尉": { y_l:[70170,71895,73620,75345,77070,78795,80520,82245,83955,85680], e_l:[46780,47930,49080,50230,51380,52530,53680,54830,55970,57120], y_n:[62865,64590,66315,68040,69765,71490,73215,74940,76650,78375], e_n:[41910,43060,44210,45360,46510,47660,48810,49960,51100,52250] },
         "一等士官長": { y_l:[87195,88350,89490,90645,91800,92940,94095,95235,96390,97545,98685,99840,100980,102135,103290,104430,105585,106725,107880,109035], e_l:[58130,58900,59660,60430,61200,61960,62730,63490,64260,65030,65790,66560,67320,68090,68860,69620,70390,71150,71920,72690], y_n:[80730,81885,83025,84180,85335,86475,87630,88770,89925,91080,92220,93375,94515,95670,96825,97965,99120,100260,101415,102570], e_n:[53820,54590,55350,56120,56890,57650,58420,59180,59950,60720,61480,62250,63010,63780,64550,65310,66080,66840,67610,68380] },
         "二等士官長": { y_l:[79860,81015,82155,83310,84465,85605,86760,87900,89055,90210,91350,92505,93645,94800,95955,97095,98250,99390,100545,101700], e_l:[53240,54010,54770,55540,56310,57070,57840,58600,59370,60140,60900,61670,62430,63200,63970,64730,65500,66260,67030,67800], y_n:[73395,74550,75690,76845,78000,79140,80295,81435,82590,83745,84885,86040,87180,88335,89490,90630,91785,92925,94080,95235], e_n:[48930,49700,50460,51230,52000,52760,53530,54290,55060,55830,56590,57360,58120,58890,59660,60420,61190,61950,62720,63490] },
         "三等士官長": { y_l:[73170,74325,75480,76620,77775,78915,80070,81225,82365,83520,84660,85815,86970,88110,89265,90405,91560,92715,93855,95010], e_l:[48780,49550,50320,51080,51850,52610,53380,54150,54910,55680,56440,57210,57980,58740,59510,60270,61040,61810,62570,63340], y_n:[66705,67860,69015,70155,71310,72450,73605,74760,75900,77055,78195,79350,80505,81645,82800,83940,85095,86250,87390,88545], e_n:[44470,45240,46010,46770,47540,48300,49070,49840,50600,51370,52130,52900,53670,54430,55200,55960,56730,57500,58260,59030] },
@@ -174,14 +202,12 @@
     }
 
     function onRankEChange() {
-        const val = document.getElementById('rank-e').value;
-        document.getElementById('display-rank-e').innerText = val;
+        document.getElementById('display-rank-e').innerText = document.getElementById('rank-e').value;
         renderE();
     }
 
     function onRankYChange() {
-        const val = document.getElementById('rank-y').value;
-        document.getElementById('display-rank-y').innerText = val;
+        document.getElementById('display-rank-y').innerText = document.getElementById('rank-y').value;
         renderY();
     }
 
@@ -193,7 +219,7 @@
         data.forEach((v, i) => {
             const item = document.createElement('div');
             item.className = `list-item ${i === lvE ? 'selected' : ''}`;
-            item.innerHTML = `<div>第 ${i+1} 級</div><div>基準 $${Math.round(v).toLocaleString()}</div>`;
+            item.innerHTML = `<div>第 ${i+1} 級</div><div>考績基準 $${Math.round(v).toLocaleString()}</div>`;
             item.onclick = () => { lvE = i; renderE(); };
             list.appendChild(item);
         });
