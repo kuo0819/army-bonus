@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>115年國軍獎金試算系統 (精準版)</title>
+    <title>115年國軍獎金計算器</title>
     <style>
         :root {
-            --tactical-black: #1a1a1a;
-            --cement-gray: #f0f0f0;
-            --warning-orange: #ff4d00;
-            --metal-gray: #7f8c8d;
+            --stealth-dark: #0a0e14;      /* 極深藍黑 */
+            --command-blue: #16212e;      /* 戰情室背景 */
+            --neon-green: #00ff9d;        /* 螢光數據綠 */
+            --warning-red: #ff3e3e;       /* 警示紅 */
+            --text-dim: #94a3b8;          /* 灰暗文字 */
+            --panel-border: #1e293b;      /* 面板邊框 */
         }
 
         body {
-            background-color: var(--cement-gray);
-            color: var(--tactical-black);
-            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--stealth-dark);
+            color: #e2e8f0;
+            font-family: "Courier New", "PingFang TC", monospace;
             margin: 0;
             padding: 10px;
             display: flex;
@@ -23,111 +25,153 @@
         }
 
         .container {
-            background-color: #fff;
+            background-color: var(--command-blue);
             width: 100%;
             max-width: 450px;
-            border: 3px solid var(--tactical-black);
+            border: 1px solid var(--panel-border);
             position: relative;
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
+        /* 頂部掃描線裝飾 */
         .top-stripe {
-            height: 15px;
-            background: repeating-linear-gradient(-45deg, var(--tactical-black), var(--tactical-black) 10px, var(--warning-orange) 10px, var(--warning-orange) 20px);
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-green), var(--stealth-dark));
+            box-shadow: 0 0 10px var(--neon-green);
         }
 
         header {
-            padding: 25px 15px;
+            padding: 30px 15px;
             text-align: center;
-            border-bottom: 2px solid var(--tactical-black);
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--panel-border);
         }
 
-        h2 { margin: 0; font-size: 22px; font-weight: 900; letter-spacing: 1px; }
+        h2 { 
+            margin: 0; 
+            font-size: 20px; 
+            letter-spacing: 4px; 
+            color: var(--neon-green);
+            text-shadow: 0 0 8px rgba(0,255,157,0.5);
+        }
 
-        .content { padding: 20px; }
+        .content { padding: 25px; }
 
         section {
-            margin-bottom: 25px;
-            border-left: 4px solid var(--tactical-black);
+            margin-bottom: 30px;
             padding-left: 15px;
+            border-left: 1px solid var(--neon-green);
         }
 
         h3 {
-            font-size: 15px;
-            background: var(--tactical-black);
-            color: #fff;
-            display: inline-block;
-            padding: 2px 10px;
-            margin-bottom: 12px;
+            font-size: 13px;
+            color: var(--neon-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            opacity: 0.8;
         }
 
         label {
             display: block;
-            font-size: 13px;
-            font-weight: bold;
-            margin: 8px 0 4px;
-            color: var(--metal-gray);
+            font-size: 12px;
+            margin: 10px 0 5px;
+            color: var(--text-dim);
         }
 
         select {
             width: 100%;
             padding: 12px;
-            background: #fff;
-            color: var(--tactical-black);
-            border: 2px solid var(--tactical-black);
+            background: var(--stealth-dark);
+            color: var(--neon-green);
+            border: 1px solid var(--panel-border);
             font-size: 16px;
-            font-weight: bold;
-            border-radius: 0;
-            margin-bottom: 8px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        select:focus {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px rgba(0,255,157,0.2);
         }
 
         .checkbox-row {
             display: flex;
             align-items: center;
-            margin: 12px 0;
-            font-weight: 900;
-            color: var(--warning-orange);
+            margin: 15px 0;
+            font-size: 14px;
+            color: var(--neon-green);
+            cursor: pointer;
         }
 
         input[type="checkbox"] {
-            width: 20px; height: 20px; margin-right: 10px; accent-color: var(--warning-orange);
+            width: 18px; height: 18px; margin-right: 10px; 
+            accent-color: var(--neon-green);
+            cursor: pointer;
         }
 
         button {
             width: 100%;
-            padding: 18px;
-            background: var(--tactical-black);
-            color: #fff;
-            border: none;
-            font-size: 18px;
-            font-weight: 900;
+            padding: 20px;
+            background: transparent;
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 5px;
             cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
         }
 
-        button:active { background: var(--warning-orange); transform: translateY(2px); }
+        button:hover {
+            background: rgba(0,255,157,0.1);
+            box-shadow: 0 0 20px rgba(0,255,157,0.3);
+        }
+
+        button:active { transform: scale(0.98); }
 
         #result {
-            margin-top: 20px;
-            border: 3px solid var(--warning-orange);
-            padding: 15px;
+            margin-top: 25px;
+            border: 1px dashed var(--neon-green);
+            padding: 20px;
             display: none;
-            background: #fff8f5;
+            background: rgba(0, 255, 157, 0.05);
+            animation: fadeIn 0.5s ease;
         }
 
-        .res-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 17px; font-weight: bold; }
-        .total-line { border-top: 2px solid var(--tactical-black); padding-top: 12px; color: var(--warning-orange); font-size: 24px; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .res-line { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 15px; color: var(--text-dim); }
+        .res-line span:last-child { color: #fff; font-family: monospace; }
+
+        .total-line { 
+            border-top: 1px solid var(--panel-border); 
+            padding-top: 15px; 
+            color: var(--neon-green) !important; 
+            font-size: 22px; 
+            text-shadow: 0 0 10px rgba(0,255,157,0.4);
+        }
         
-        /* 提示字樣 */
-        .bonus-hint { font-size: 12px; color: #d35400; margin-top: 5px; font-style: italic; display: none; }
+        .bonus-hint { font-size: 11px; color: var(--warning-red); margin-top: 8px; display: none; }
 
         footer {
-            padding: 20px 15px;
+            padding: 25px 15px;
             text-align: center;
-            background: #eee;
-            border-top: 2px solid var(--tactical-black);
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid var(--panel-border);
         }
 
-        .author-box { border: 2px solid var(--tactical-black); padding: 8px; display: inline-block; font-weight: 900; background: #fff; }
+        .author-box { 
+            font-size: 11px;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+        }
+        .author-box b { color: var(--neon-green); }
     </style>
 </head>
 <body>
@@ -135,46 +179,46 @@
 <div class="container">
     <div class="top-stripe"></div>
     <header>
-        <h2>115年獎金試算系統</h2>
+        <h2>TACTICAL BONUS SYSTEM</h2>
     </header>
 
     <div class="content">
         <section>
-            <h3>一、年終獎金設定 (12月)</h3>
-            <label>生效階級</label>
+            <h3>1. Annual Bonus (Dec)</h3>
+            <label>RANK / 階級</label>
             <select id="r1" onchange="updateLevels('l1', this.value)"></select>
-            <label>俸級</label>
+            <label>LEVEL / 俸級</label>
             <select id="l1"></select>
             <div class="checkbox-row">
-                <input type="checkbox" id="b1" checked> 支領領導加給
+                <input type="checkbox" id="b1" checked> 領導加給方案
             </div>
         </section>
 
         <section>
-            <h3>二、考績獎金設定</h3>
-            <label>生效階級</label>
+            <h3>2. Performance Bonus</h3>
+            <label>RANK / 階級</label>
             <select id="r2" onchange="updateLevels('l2', this.value)"></select>
-            <label>俸級</label>
+            <label>LEVEL / 俸級</label>
             <select id="l2"></select>
             <div class="checkbox-row">
-                <input type="checkbox" id="b2" checked> 支領領導加給
+                <input type="checkbox" id="b2" checked> 領導加給方案
             </div>
-            <label>考績等第</label>
-            <div style="font-weight: bold; color: var(--tactical-black); padding: 5px 0;" id="eval_text">甲等 (1.0 個月)</div>
-            <div id="bonus_hint" class="bonus-hint">※ 已達最高俸級，考績獎金以 2.0 個月計算</div>
+            <label>STATUS / 考核狀態</label>
+            <div style="font-weight: bold; color: #fff;" id="eval_text">甲等 (1.0 個月)</div>
+            <div id="bonus_hint" class="bonus-hint">!! DETECTED: 最高俸級考獎加倍 (2.0x) !!</div>
         </section>
 
-        <button onclick="calculate()">執行精確計算</button>
+        <button onclick="calculate()">Decrypt / 執行試算</button>
 
         <div id="result">
             <div class="res-line"><span>預計年終獎金:</span><span id="res_y"></span></div>
             <div class="res-line"><span>預計考績獎金:</span><span id="res_e"></span></div>
-            <div class="res-line total-line"><span>核發總額合計:</span><span id="res_t"></span></div>
+            <div class="res-line total-line"><span>TOTAL AMOUNT:</span><span id="res_t"></span></div>
         </div>
     </div>
 
     <footer>
-        <div class="author-box">網頁製作者：上士 郭俊廷</div>
+        <div class="author-box">DECRYPTED BY: <b>上士 郭俊廷</b></div>
     </footer>
 </div>
 
