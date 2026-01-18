@@ -17,65 +17,51 @@
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, "Microsoft JhengHei", sans-serif; }
-        body { background: var(--bg); color: var(--text); margin: 0; padding-bottom: 240px; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); margin: 0; padding-bottom: 250px; overflow-x: hidden; }
 
         /* Header */
         .header { padding: 35px 20px 15px; background: linear-gradient(to bottom, #1e293b, var(--bg)); text-align: center; }
         .header h1 { font-size: 24px; margin: 0; font-weight: 800; letter-spacing: 2px; text-shadow: 0 0 10px rgba(0,242,255,0.3); }
         .header .sub-ref { color: var(--accent); font-size: 13px; margin-top: 8px; opacity: 0.8; letter-spacing: 1px; }
 
-        /* Tabs */
         .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 15px; background: var(--bg); position: sticky; top: 0; z-index: 10; }
         .tab { flex: 1; text-align: center; padding: 15px; color: var(--text-dim); cursor: pointer; position: relative; font-size: 15px; }
         .tab.active { color: var(--accent); font-weight: bold; }
         .tab.active::after { content: ""; position: absolute; bottom: 0; left: 20%; right: 20%; height: 3px; background: var(--accent); border-radius: 2px; }
 
-        /* Layout & UI Elements */
         .container { padding: 0 16px; display: none; }
         .container.active { display: block; }
         .label { font-size: 14px; color: var(--text-dim); margin: 15px 0 8px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
-        .input-box { width: 100%; background: var(--card); border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; font-size: 16px; outline: none; margin-bottom: 12px; appearance: none; }
-        .btn-group { display: flex; background: #1e2638; padding: 4px; border-radius: 12px; gap: 4px; margin-bottom: 10px; }
-        .btn-item { flex: 1; text-align: center; padding: 12px; border-radius: 10px; cursor: pointer; color: var(--text-dim); font-size: 14px; }
-        .btn-item.active { background: var(--active-bg); color: white; font-weight: bold; }
+        .input-box { width: 100%; background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; font-size: 15px; outline: none; margin-bottom: 10px; }
 
-        /* List & Results */
-        .list-container { background: var(--card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-top: 5px; }
-        .list-header { padding: 12px 15px; font-size: 11px; color: var(--accent); background: rgba(255,255,255,0.03); display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); }
-        .scroll-area { max-height: 180px; overflow-y: auto; }
-        .list-item { display: flex; justify-content: space-between; padding: 14px 15px; border-bottom: 1px solid var(--border); cursor: pointer; }
-        .list-item.selected { background: rgba(0, 242, 255, 0.1); border-left: 4px solid var(--accent); }
-
-        /* Promo Switch */
-        .promo-card { background: rgba(251, 191, 36, 0.05); border: 1px dashed var(--promo-color); padding: 12px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .promo-card { background: rgba(251, 191, 36, 0.05); border: 1px dashed var(--promo-color); padding: 12px; border-radius: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .switch input { opacity: 0; }
+        .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #475569; transition: .4s; border-radius: 24px; }
         .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .slider { background-color: var(--promo-color); }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        /* Sticky Footer */
-        .footer-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #0f172a; padding: 15px 20px 10px; border-top: 1px solid var(--border); backdrop-filter: blur(15px); z-index: 100; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
-        .monthly-info { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; display: flex; justify-content: space-between; }
+        .list-container { background: var(--card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 15px; }
+        .list-header { padding: 10px 15px; font-size: 11px; color: var(--accent); background: rgba(255,255,255,0.03); display: flex; justify-content: space-between; }
+        .scroll-area { max-height: 140px; overflow-y: auto; }
+        .list-item { display: flex; justify-content: space-between; padding: 12px 15px; border-bottom: 1px solid var(--border); font-size: 14px; cursor: pointer; }
+        .list-item.selected { background: rgba(0, 242, 255, 0.1); border-left: 4px solid var(--accent); }
+
+        .footer-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #0f172a; padding: 15px 20px 10px; border-top: 1px solid var(--border); backdrop-filter: blur(15px); z-index: 100; }
         .total-amount { font-size: 34px; font-weight: 800; color: white; }
         .total-amount span { color: var(--accent); font-size: 22px; margin-right: 4px; }
         .b-row { font-size: 13px; margin-bottom: 2px; text-align: right; }
         .b-y { color: white; font-weight: bold; }
         .b-e { color: var(--promo-color); font-weight: bold; }
 
-        /* 酷炫製作者標章 */
         .author-section { margin-top: 15px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; }
-        .signature-box { display: inline-block; padding: 5px 15px; border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 4px; position: relative; overflow: hidden; }
-        .signature-box::before { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.1), transparent); animation: shine 3s infinite; }
-        .author-text { font-size: 11px; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; }
-        .author-name { display: block; font-size: 14px; color: var(--accent); font-weight: 600; margin-top: 2px; filter: drop-shadow(0 0 5px rgba(0,242,255,0.5)); }
+        .signature-box { display: inline-block; padding: 5px 15px; border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 4px; position: relative; }
+        .author-text { font-size: 10px; color: var(--text-dim); letter-spacing: 2px; display: block; }
+        .author-name { font-size: 14px; color: var(--accent); font-weight: 600; filter: drop-shadow(0 0 5px rgba(0,242,255,0.5)); }
         
-        @keyframes shine { 0% { left: -100%; } 100% { left: 100%; } }
-
-        /* Eval Grid */
         .eval-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .eval-card { background: var(--card); border: 1px solid var(--border); padding: 15px; border-radius: 12px; text-align: center; }
+        .eval-card { background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 10px; text-align: center; }
         .eval-card.active { border-color: var(--accent); background: rgba(0, 242, 255, 0.05); }
     </style>
 </head>
@@ -87,68 +73,55 @@
 </div>
 
 <div class="tabs">
-    <div id="tab0" class="tab active" onclick="switchTab(0)">🔍 對照表查詢</div>
-    <div id="tab1" class="tab" onclick="switchTab(1)">$ 自訂輸入</div>
+    <div id="tab0" class="tab active" onclick="switchTab(0)">🔍 獎金對照試算</div>
+    <div id="tab1" class="tab" onclick="switchTab(1)">$ 手動輸入模式</div>
 </div>
 
 <div id="page0" class="container active">
-    <div class="label">當前職級設定</div>
-    <select id="rank" class="input-box" onchange="render()"></select>
+    <div class="label"><span style="color:var(--text)">1. 考績獎金設定 (舊階)</span></div>
+    <select id="rank-e" class="input-box" onchange="renderE()"></select>
+    <div class="list-container">
+        <div class="list-header"><span>選擇考績年度俸級</span></div>
+        <div class="scroll-area" id="list-e"></div>
+    </div>
 
     <div class="promo-card">
         <div style="flex-grow: 1;">
-            <div style="font-weight:bold; color:var(--promo-color);">跨年晉升模式</div>
-            <div style="font-size:11px; color:var(--text-dim);">年終按舊階 / 考績按新階</div>
+            <div style="font-weight:bold; color:var(--promo-color);">跨年晉升 / 階級異動模式</div>
+            <div style="font-size:11px; color:var(--text-dim);">年終與考績階級不同時開啟</div>
         </div>
-        <label class="switch"><input type="checkbox" id="promo-mode-tab0" onchange="togglePromoTab0()"><span class="slider"></span></label>
+        <label class="switch"><input type="checkbox" id="promo-mode" onchange="togglePromo()"><span class="slider"></span></label>
     </div>
 
-    <div id="promo-rank-select" style="display:none;">
-        <div class="label" style="color:var(--promo-color)">預計晉升階級</div>
-        <select id="next-rank" class="input-box" style="border-color:var(--promo-color)" onchange="calculate()"></select>
-    </div>
-
-    <div class="btn-group">
-        <div id="type-l" class="btn-item" onclick="changeType(true)">領導職</div>
-        <div id="type-n" class="btn-item active" onclick="changeType(false)">非領導職</div>
-    </div>
-
-    <div class="list-container">
-        <div class="list-header"><span>俸級清單</span><span>月本俸基準</span></div>
-        <div class="scroll-area" id="lv-list"></div>
+    <div id="y-section">
+        <div class="label"><span id="y-label-text" style="color:var(--accent)">2. 年終獎金設定</span></div>
+        <select id="rank-y" class="input-box" onchange="renderY()"></select>
+        <div class="list-container">
+            <div class="list-header"><span>選擇年終計算俸級</span></div>
+            <div class="scroll-area" id="list-y"></div>
+        </div>
     </div>
 </div>
 
 <div id="page1" class="container">
-    <div class="promo-card">
-        <div>
-            <div style="font-weight:bold; color:var(--promo-color);">晉升加給模式</div>
-            <div style="font-size:11px; color:var(--text-dim);">手動輸入生效前後薪資</div>
-        </div>
-        <label class="switch"><input type="checkbox" id="promo-switch-tab1" onchange="calculate()"><span class="slider"></span></label>
-    </div>
-    <div class="label" id="main-pay-label">月支總額 (含加給)</div>
-    <input type="number" id="inp-main" class="input-box" placeholder="請輸入 12 月薪資" oninput="calculate()">
-    
-    <div id="promo-inputs-tab1" style="display:none;">
-        <div class="label" style="color:var(--promo-color)">1/1 晉升新薪資</div>
-        <input type="number" id="inp-promo" class="input-box" style="border-color:var(--promo-color)" placeholder="請輸入 1 月新薪資" oninput="calculate()">
-    </div>
+    <div class="label">年終獎金基準 (12/31 薪資)</div>
+    <input type="number" id="inp-main" class="input-box" placeholder="請輸入金額" oninput="calculate()">
+    <div class="label">考績獎金基準 (年度表現薪資)</div>
+    <input type="number" id="inp-eval" class="input-box" placeholder="請輸入金額" oninput="calculate()">
 </div>
 
 <div class="container active" style="display:block; margin-top:10px;">
     <div class="label">年度考績評定</div>
     <div class="eval-grid">
-        <div id="ev-1" class="eval-card active" onclick="changeEval(1.0)"><div style="font-size:18px;font-weight:bold">甲等</div><div style="font-size:12px;opacity:0.6">1.0 個月</div></div>
-        <div id="ev-05" class="eval-card" onclick="changeEval(0.5)"><div style="font-size:18px;font-weight:bold">乙上</div><div style="font-size:12px;opacity:0.6">0.5 個月</div></div>
+        <div id="ev-1" class="eval-card active" onclick="changeEval(1.0)"><b>甲等</b><br><small>1.0 個月</small></div>
+        <div id="ev-05" class="eval-card" onclick="changeEval(0.5)"><b>乙上</b><br><small>0.5 個月</small></div>
     </div>
 </div>
 
 <div class="footer-bar">
-    <div class="monthly-info"><span id="footer-note">計算中...</span><span>基準月薪: $<span id="footer-monthly">0</span></span></div>
     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
         <div>
-            <div style="font-size: 11px; color: var(--text-dim);">預計領取總金額</div>
+            <div style="font-size: 11px; color: var(--text-dim);" id="footer-note">計算基準：單一職級</div>
             <div class="total-amount"><span>$</span><span id="final-total">0</span></div>
         </div>
         <div>
@@ -156,7 +129,6 @@
             <div class="b-row">考績獎金 <span id="final-e" class="b-e">$0</span></div>
         </div>
     </div>
-
     <div class="author-section">
         <div class="signature-box">
             <span class="author-text">系統開發認證</span>
@@ -166,7 +138,7 @@
 </div>
 
 <script>
-    // 數據庫保持不變 (省略顯示但功能完整)
+    // 數據庫保持不變
     const db = {
         "上校": { y_l:[134715,137025,139320,141615,143910,146205,148500,150810,153105,155400,157695,160005], e_l:[89810,91350,92880,94410,95940,97470,99010,100540,102070,103600,105130,106670], y_n:[114450,116760,119055,121350,123645,125940,128250,130545,132840,135150,137430,139740], e_n:[76300,77840,79370,80900,82430,83960,85500,87030,88560,90090,91620,93160] },
         "中校": { y_l:[112755,114480,116205,117930,119640,121365,123090,124815,126540,128265,129990,131715], e_l:[75170,76320,77470,78620,79760,80910,82060,83210,84360,85510,86660,87810], y_n:[99435,101160,102885,104610,106320,108045,109770,111495,113220,114945,116670,118395], e_n:[66290,67440,68590,69740,70880,72030,73180,74330,75480,76630,77780,78930] },
@@ -183,7 +155,7 @@
         "二兵": { y_n:[39495], e_n:[26330] }
     };
 
-    let activeTab = 0, isLead = false, selectedLv = 0, evalMultiplier = 1.0;
+    let activeTab = 0, isLead = false, lvE = 0, lvY = 0, evalRate = 1.0;
 
     function switchTab(t) {
         activeTab = t;
@@ -195,85 +167,90 @@
     }
 
     function init() {
-        const sel = document.getElementById('rank');
-        const nextSel = document.getElementById('next-rank');
+        const selE = document.getElementById('rank-e');
+        const selY = document.getElementById('rank-y');
         Object.keys(db).forEach(k => {
-            sel.add(new Option(k, k));
-            nextSel.add(new Option(k, k));
+            selE.add(new Option(k, k));
+            selY.add(new Option(k, k));
         });
-        sel.value = "中士";
-        nextSel.value = "上士";
-        render();
+        selE.value = "中士";
+        selY.value = "上士";
+        togglePromo();
+        renderE(); renderY();
     }
 
-    function changeType(l) {
-        isLead = l;
-        document.getElementById('type-l').classList.toggle('active', l);
-        document.getElementById('type-n').classList.toggle('active', !l);
-        render();
-    }
-
-    function togglePromoTab0() {
-        const isPromo = document.getElementById('promo-mode-tab0').checked;
-        document.getElementById('promo-rank-select').style.display = isPromo ? 'block' : 'none';
+    function togglePromo() {
+        const isP = document.getElementById('promo-mode').checked;
+        document.getElementById('y-section').style.display = isP ? 'block' : 'none';
+        document.getElementById('y-label-text').innerText = isP ? "2. 年終獎金設定 (新階)" : "";
         calculate();
     }
 
-    function changeEval(e) {
-        evalMultiplier = e;
-        document.getElementById('ev-1').classList.toggle('active', e === 1.0);
-        document.getElementById('ev-05').classList.toggle('active', e === 0.5);
-        calculate();
-    }
-
-    function render() {
-        if (activeTab !== 0) return;
-        const rank = document.getElementById('rank').value;
-        const list = document.getElementById('lv-list');
-        const dataY = (isLead && db[rank].y_l) ? db[rank].y_l : db[rank].y_n;
-        if (selectedLv >= dataY.length) selectedLv = 0;
+    function renderE() {
+        const rank = document.getElementById('rank-e').value;
+        const data = (isLead && db[rank].e_l) ? db[rank].e_l : db[rank].e_n;
+        const list = document.getElementById('list-e');
         list.innerHTML = "";
-        dataY.forEach((val, i) => {
+        data.forEach((v, i) => {
             const item = document.createElement('div');
-            item.className = `list-item ${i === selectedLv ? 'selected' : ''}`;
-            item.innerHTML = `<div>第 ${i+1} 級</div> <div>$${Math.round(val/1.5).toLocaleString()}</div>`;
-            item.onclick = () => { selectedLv = i; render(); };
+            item.className = `list-item ${i === lvE ? 'selected' : ''}`;
+            item.innerHTML = `<div>第 ${i+1} 級</div><div>基準 $${Math.round(v).toLocaleString()}</div>`;
+            item.onclick = () => { lvE = i; renderE(); };
             list.appendChild(item);
         });
         calculate();
     }
 
+    function renderY() {
+        const rank = document.getElementById('rank-y').value;
+        const data = (isLead && db[rank].y_l) ? db[rank].y_l : db[rank].y_n;
+        const list = document.getElementById('list-y');
+        list.innerHTML = "";
+        data.forEach((v, i) => {
+            const item = document.createElement('div');
+            item.className = `list-item ${i === lvY ? 'selected' : ''}`;
+            item.innerHTML = `<div>第 ${i+1} 級</div><div>月薪 $${Math.round(v/1.5).toLocaleString()}</div>`;
+            item.onclick = () => { lvY = i; renderY(); };
+            list.appendChild(item);
+        });
+        calculate();
+    }
+
+    function changeEval(r) {
+        evalRate = r;
+        document.getElementById('ev-1').classList.toggle('active', r === 1.0);
+        document.getElementById('ev-05').classList.toggle('active', r === 0.5);
+        calculate();
+    }
+
     function calculate() {
-        let yBonus = 0, eBonus = 0, mDisp = 0, note = "";
+        let yBonus = 0, eBonus = 0, note = "";
+        
         if (activeTab === 0) {
-            const rank = document.getElementById('rank').value;
-            const isP = document.getElementById('promo-mode-tab0').checked;
-            const nextR = document.getElementById('next-rank').value;
-            const dataY = (isLead && db[rank].y_l) ? db[rank].y_l : db[rank].y_n;
-            yBonus = dataY[selectedLv];
-            mDisp = Math.round(yBonus / 1.5);
-            if (!isP) {
-                const dataE = (isLead && db[rank].e_l) ? db[rank].e_l : db[rank].e_n;
-                let rate = evalMultiplier;
-                if (selectedLv === dataY.length - 1 && dataY.length > 1) rate *= 2; 
-                eBonus = Math.round(dataE[selectedLv] * rate);
-                note = `基準：${rank} 第${selectedLv+1}級`;
-            } else {
-                const dataENext = (isLead && db[nextR].e_l) ? db[nextR].e_l : db[nextR].e_n;
-                eBonus = Math.round(dataENext[0] * evalMultiplier);
-                note = `晉升：年終(${rank}) / 考績(${nextR})`;
-            }
+            const isP = document.getElementById('promo-mode').checked;
+            const rankE = document.getElementById('rank-e').value;
+            const rankY = isP ? document.getElementById('rank-y').value : rankE;
+            const finalLvY = isP ? lvY : lvE;
+
+            // 考績計算
+            const dataE = (isLead && db[rankE].e_l) ? db[rankE].e_l : db[rankE].e_n;
+            let currentEvalRate = evalRate;
+            if (lvE === dataE.length - 1 && dataE.length > 1) currentEvalRate *= 2; // 滿級數兩倍
+            eBonus = Math.round(dataE[lvE] * currentEvalRate);
+
+            // 年終計算
+            const dataY = (isLead && db[rankY].y_l) ? db[rankY].y_l : db[rankY].y_n;
+            yBonus = dataY[finalLvY];
+
+            note = isP ? `考績(${rankE}) + 年終(${rankY})` : `單一階級(${rankE}) 試算`;
         } else {
-            const isP = document.getElementById('promo-switch-tab1').checked;
-            const mPay = Number(document.getElementById('inp-main').value) || 0;
-            const pPay = Number(document.getElementById('inp-promo').value) || 0;
-            document.getElementById('promo-inputs-tab1').style.display = isP ? 'block' : 'none';
-            yBonus = Math.round(mPay * 1.5);
-            eBonus = Math.round((isP ? pPay : mPay) * evalMultiplier);
-            mDisp = isP ? pPay : mPay;
-            note = isP ? "跨年晉升：手動試算中" : "一般模式：按月支總額計算";
+            const mY = Number(document.getElementById('inp-main').value) || 0;
+            const mE = Number(document.getElementById('inp-eval').value) || 0;
+            yBonus = Math.round(mY * 1.5);
+            eBonus = Math.round(mE * evalRate);
+            note = "手動基準值試算";
         }
-        document.getElementById('footer-monthly').innerText = mDisp.toLocaleString();
+
         document.getElementById('final-y').innerText = `$${yBonus.toLocaleString()}`;
         document.getElementById('final-e').innerText = `$${eBonus.toLocaleString()}`;
         document.getElementById('final-total').innerText = (yBonus + eBonus).toLocaleString();
