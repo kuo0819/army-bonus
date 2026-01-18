@@ -2,218 +2,172 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>115年獎金試算系統</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>114年國軍年終考獎精確試算系統</title>
     <style>
-        :root {
-            --bg: #0a0e17;
-            --card: #161d2b;
-            --accent: #00f2ff; /* 神秘科技青 */
-            --text: #ffffff;
-            --text-dim: #94a3b8;
-            --border: #2d3748;
-            --active-bg: #2d3a54;
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, sans-serif; }
-        body { background: var(--bg); color: var(--text); margin: 0; padding-bottom: 140px; }
-
-        /* Header */
-        .header { padding: 30px 20px; background: linear-gradient(to bottom, #1e293b, var(--bg)); }
-        .header h1 { font-size: 22px; margin: 0; font-weight: 800; }
-        .header p { color: var(--text-dim); font-size: 13px; margin: 8px 0 0; }
-
-        /* Tabs */
-        .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 15px; }
-        .tab { flex: 1; text-align: center; padding: 15px; color: var(--text-dim); cursor: pointer; position: relative; }
-        .tab.active { color: var(--accent); font-weight: bold; }
-        .tab.active::after { content: ""; position: absolute; bottom: 0; left: 25%; right: 25%; height: 3px; background: var(--accent); border-radius: 2px; }
-
-        .container { padding: 0 16px; }
-        .label { font-size: 14px; color: var(--text-dim); margin: 20px 0 10px; font-weight: 500; }
-
-        /* Select styling */
-        .select-style {
-            width: 100%; background: var(--card); border: 1px solid var(--border);
-            padding: 15px; border-radius: 12px; color: white; font-size: 16px; outline: none;
-        }
-
-        /* Toggle Buttons */
-        .btn-group { display: flex; background: #1e2638; padding: 4px; border-radius: 12px; gap: 4px; }
-        .btn-item { flex: 1; text-align: center; padding: 12px; border-radius: 10px; cursor: pointer; color: var(--text-dim); transition: 0.2s; }
-        .btn-item.active { background: var(--active-bg); color: white; font-weight: bold; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
-
-        /* List styling */
-        .list-container { background: var(--card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-top: 10px; }
-        .list-header { padding: 12px 15px; font-size: 12px; color: var(--accent); background: rgba(255,255,255,0.03); display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); }
-        .scroll-area { max-height: 280px; overflow-y: auto; }
-        .list-item { display: flex; justify-content: space-between; padding: 16px 15px; border-bottom: 1px solid var(--border); cursor: pointer; transition: 0.2s; }
-        .list-item:last-child { border-bottom: none; }
-        .list-item.selected { background: rgba(0, 242, 255, 0.08); border-left: 4px solid var(--accent); }
-        .badge { background: #f59e0b; color: black; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold; vertical-align: middle; }
-
-        /* Evaluation Grid */
-        .eval-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .eval-card { background: var(--card); border: 1px solid var(--border); padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; }
-        .eval-card.active { border-color: var(--accent); background: rgba(0, 242, 255, 0.05); }
-        .eval-card.active .eval-name { color: var(--accent); }
-        .eval-name { font-size: 18px; font-weight: bold; display: block; }
-        .eval-sub { font-size: 12px; color: var(--text-dim); }
-
-        /* Sticky Bottom Bar */
-        .footer-bar {
-            position: fixed; bottom: 0; left: 0; right: 0; background: #0f172a;
-            padding: 20px; border-top: 1px solid var(--border); display: flex;
-            justify-content: space-between; align-items: flex-end; backdrop-filter: blur(15px);
-        }
-        .total-label { font-size: 13px; color: var(--text-dim); }
-        .total-amount { font-size: 30px; font-weight: 800; display: block; }
-        .total-amount span { color: var(--accent); font-size: 20px; margin-right: 4px; }
-        .breakdown { text-align: right; }
-        .b-row { font-size: 13px; margin-bottom: 3px; }
-        .b-row span:first-child { color: var(--text-dim); }
-        .b-y { color: white; font-weight: bold; }
-        .b-e { color: #fbbf24; font-weight: bold; }
+        :root { --primary: #2c3e50; --success: #27ae60; --danger: #e74c3c; --blue: #0984e3; }
+        body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; background-color: #f4f7f6; margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .container { background: white; width: 100%; max-width: 500px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: var(--primary); margin-bottom: 25px; font-size: 24px; border-bottom: 3px solid var(--blue); padding-bottom: 10px; }
+        .card { background: #fff; border: 1px solid #dcdde1; padding: 18px; border-radius: 15px; margin-bottom: 20px; }
+        .card-title { font-weight: bold; color: var(--blue); margin-bottom: 12px; display: block; font-size: 16px; }
+        label { display: block; font-size: 14px; margin-top: 10px; color: #636e72; }
+        select { width: 100%; padding: 12px; border-radius: 10px; border: 1.5px solid #bdc3c7; font-size: 16px; margin-top: 6px; background: white; }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; margin: 18px 0 5px; font-weight: bold; color: #2d3436; cursor: pointer; }
+        input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
+        button { width: 100%; padding: 16px; background: var(--success); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        #result { margin-top: 25px; padding: 20px; border-radius: 15px; background: #fff9db; display: none; border: 1px solid #f1c40f; }
+        .res-line { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 18px; }
+        .total-line { border-top: 2px dashed #f1c40f; padding-top: 15px; margin-top: 10px; font-weight: bold; color: var(--danger); font-size: 24px; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>115年國軍獎金試算</h1>
-    <p>完全復刻版・數據已更新</p>
-</div>
-
-<div class="tabs">
-    <div class="tab active">對照表查詢</div>
-    <div class="tab">自訂輸入</div>
-</div>
-
 <div class="container">
-    <div class="label">選擇階級</div>
-    <select id="rank" class="select-style" onchange="render()"></select>
+    <h2>🎖️ 114年薪資試算系統</h2>
 
-    <div class="label">職務性質</div>
-    <div class="btn-group">
-        <div id="type-l" class="btn-item" onclick="changeType(true)">領導職</div>
-        <div id="type-n" class="btn-item active" onclick="changeType(false)">非領導職</div>
+    <div class="card">
+        <span class="card-title">1. 年終獎金 (12月生效階級)</span>
+        <label>選擇階級</label>
+        <select id="r1" onchange="updateLevels('l1', this.value)"></select>
+        <label>選擇俸級</label>
+        <select id="l1"></select>
+        <label class="checkbox-group">
+            <input type="checkbox" id="b1" checked> 支領領導職務加給
+        </label>
     </div>
 
-    <div class="label">俸級 (本俸)</div>
-    <div class="list-container">
-        <div class="list-header">
-            <span id="rank-name">--</span>
-            <span id="lv-count">--</span>
-        </div>
-        <div class="scroll-area" id="lv-list"></div>
+    <div class="card">
+        <span class="card-title">2. 考績獎金 (生效階級)</span>
+        <label>選擇階級</label>
+        <select id="r2" onchange="updateLevels('l2', this.value)"></select>
+        <label>選擇俸級</label>
+        <select id="l2"></select>
+        <label class="checkbox-group">
+            <input type="checkbox" id="b2" checked> 支領領導職務加給
+        </label>
+        <label>考績等第</label>
+        <select id="eval">
+            <option value="1">甲等 (1.0 個月)</option>
+            <option value="0.5">乙上 (0.5 個月)</option>
+        </select>
     </div>
 
-    <div class="label">考績獎金設定</div>
-    <div class="eval-grid">
-        <div id="ev-1" class="eval-card active" onclick="changeEval(1.0)">
-            <span class="eval-name">甲等</span>
-            <span class="eval-sub">1.0 個月</span>
-        </div>
-        <div id="ev-05" class="eval-card" onclick="changeEval(0.5)">
-            <span class="eval-name">乙上</span>
-            <span class="eval-sub">0.5 個月</span>
-        </div>
-    </div>
-</div>
+    <button onclick="calculate()">立即計算預估總額</button>
 
-<div class="footer-bar">
-    <div>
-        <span class="total-label">預估領取總額</span>
-        <span class="total-amount"><span>$</span><span id="final-total">0</span></span>
-    </div>
-    <div class="breakdown">
-        <div class="b-row"><span>年終 (1.5)</span> <span id="final-y" class="b-y">$0</span></div>
-        <div class="b-row"><span>考績 (<span id="ev-rate">1.0</span>)</span> <span id="final-e" class="b-e">$0</span></div>
+    <div id="result">
+        <div class="res-line"><span>預估年終獎金：</span><span id="res_y"></span></div>
+        <div class="res-line"><span>預估考績獎金：</span><span id="res_e"></span></div>
+        <div class="total-line"><span>預計撥付總計：</span><span id="res_t"></span></div>
+        <p style="font-size:12px; color:#7f8c8d; margin-top:10px; text-align:center;">* 數據已包含士兵(二兵/一兵/上兵)數據 *</p>
     </div>
 </div>
 
 <script>
-    // 完整數據庫：軍官、士官、士兵 (115年預估)
-    const db = {
-        "上校": { y_l:[134715,137025,139320,141615,143910,146205,148500,150810,153105,155400,157695,160005], e_l:[89810,91350,92880,94410,95940,97470,99010,100540,102070,103600,105130,106670], y_n:[114450,116760,119055,121350,123645,125940,128250,130545,132840,135150,137430,139740], e_n:[76300,77840,79370,80900,82430,83960,85500,87030,88560,90090,91620,93160] },
-        "中校": { y_l:[112755,114480,116205,117930,119640,121365,123090,124815,126540,128265,129990,131715], e_l:[75170,76320,77470,78620,79760,80910,82060,83210,84360,85510,86660,87810], y_n:[99435,101160,102885,104610,106320,108045,109770,111495,113220,114945,116670,118395], e_n:[66290,67440,68590,69740,70880,72030,73180,74330,75480,76630,77780,78930] },
-        "少校": { y_l:[95370,97095,98820,100545,102270,103995,105720,107445,109155,110880,112605,114330], e_l:[63580,64730,65880,67030,68180,69330,70480,71630,72770,73920,75070,76220], y_n:[86475,88200,89925,91650,93375,95100,96825,98550,100260,101985,103710,105435], e_n:[57650,58800,59950,61100,62250,63400,64550,65700,66840,67990,69140,70290] },
-        "上尉": { y_l:[86445,88170,89895,91620,93345,95070,96795,98520,100230,101955,103680,105405], e_l:[57630,58780,59930,61080,62230,63380,64530,65680,66820,67970,69120,70270], y_n:[79140,80865,82590,84315,86040,87765,89490,91215,92925,94650,96375,98100], e_n:[52760,53910,55060,56210,57360,58510,59660,60810,61950,63100,64250,65400] },
-        "中尉": { y_l:[76635,77790,78930,80085,81240,82380,83535,84675,85830,86985], e_l:[51090,51860,52620,53390,54160,54920,55690,56450,57220,57990], y_n:[70155,71310,72450,73605,74760,75900,77055,78195,79350,80505], e_n:[46770,47540,48300,49070,49840,50600,51370,52130,52900,53670] },
-        "一等士官長": { y_l:[87195,88350,89490,90645,91800,92940,94095,95235,96390,97545,98685,99840,100980,102135,103290,104430,105585,106725,107880,109035], e_l:[58130,58900,59660,60430,61200,61960,62730,63490,64260,65030,65790,66560,67320,68090,68860,69620,70390,71150,71920,72690], y_n:[80730,81885,83025,84180,85335,86475,87630,88770,89925,91080,92220,93375,94515,95670,96825,97965,99120,100260,101415,102570], e_n:[53820,54590,55350,56120,56890,57650,58420,59180,59950,60720,61480,62250,63010,63780,64550,65310,66080,66840,67610,68380] },
-        "上士": { y_l:[67695,68850,69990,71145,72300,73440,74595,75735,76890,78045,79185,80340], e_l:[45130,45900,46660,47430,48200,48960,49730,50490,51260,52030,52790,53560], y_n:[62550,63705,64845,66000,67155,68295,69450,70590,71745,72900,74040,75195], e_n:[41700,42470,43230,44000,44770,45530,46300,47060,47830,48600,49360,50130] },
-        "上兵": { y_n:[46275,47535,48345,49155,49965,50775], e_n:[30850,31690,32230,32770,33310,33850] }
-    };
+// 完整全軍職數據庫
+const database = {
+    "上校": {
+        y_lead: [134715, 137025, 139320, 141615, 143910, 146205, 148500, 150810, 153105, 155400, 157710, 160005],
+        e_lead: [89810, 91350, 92880, 94410, 95940, 97470, 99010, 100540, 102070, 103600, 105140, 106670],
+        y_none: [114450, 116760, 119055, 121350, 123645, 125955, 128250, 130545, 132840, 135150, 137445, 139740],
+        e_none: [76300, 77840, 79370, 80900, 82430, 83970, 85500, 87030, 88560, 90100, 91630, 93160]
+    },
+    "中校": {
+        y_lead: [107415, 109200, 110985, 112770, 114555, 116340, 118125, 119910, 121695, 123480, 125265, 127050],
+        e_lead: [71610, 72800, 73990, 75180, 76370, 77560, 78750, 79940, 81130, 82320, 83510, 84700],
+        y_none: [93135, 94920, 96705, 98490, 100275, 102060, 103845, 105630, 107415, 109200, 110985, 112770],
+        e_none: [62090, 63280, 64470, 65660, 66850, 68040, 69230, 70420, 71610, 72800, 73990, 75180]
+    },
+    "少校": {
+        y_lead: [92250, 93825, 95400, 96975, 98550, 100125, 101700, 103275, 104850, 106425, 108000, 109575],
+        e_lead: [61500, 62550, 63600, 64650, 65700, 66750, 67800, 68850, 69900, 70950, 72000, 73050],
+        y_none: [79785, 81360, 82935, 84510, 86085, 87660, 89235, 90810, 92385, 93960, 95535, 97110],
+        e_none: [53190, 54240, 55290, 56340, 57390, 58440, 59490, 60540, 61590, 62640, 63690, 64740]
+    },
+    "上尉": {
+        y_lead: [76860, 78105, 79350, 80595, 81840, 83085, 84330, 85575, 86820, 88065, 89310, 90555],
+        e_lead: [51240, 52070, 52900, 53730, 54560, 55390, 56220, 57050, 57880, 58710, 59540, 60370],
+        y_none: [68130, 69375, 70620, 71865, 73110, 74355, 75600, 76845, 78090, 79335, 80580, 81825],
+        e_none: [45420, 46250, 47080, 47910, 48740, 49570, 50400, 51230, 52060, 52890, 53720, 54550]
+    },
+    "中尉": {
+        y_lead: [65955, 67110, 68265, 69420, 70575, 71730, 72885, 74040, 75195, 76350, 77505, 78660],
+        e_lead: [43970, 44740, 45510, 46280, 47050, 47820, 48590, 49360, 50130, 50900, 51670, 52440],
+        y_none: [58680, 59835, 60990, 62145, 63300, 64455, 65610, 66765, 67920, 69075, 70230, 71385],
+        e_none: [39120, 39890, 40660, 41430, 42200, 42970, 43740, 44510, 45280, 46050, 46820, 47590]
+    },
+    "少尉": {
+        y_lead: [59685, 60840, 61995, 63150, 64305, 65460, 66615, 67770, 68925, 70080],
+        e_lead: [39790, 40560, 41330, 42100, 42870, 43640, 44410, 45180, 45950, 46720],
+        y_none: [53430, 54585, 55740, 56895, 58050, 59205, 60360, 61515, 62670, 63825],
+        e_none: [35620, 36390, 37160, 37930, 38700, 39470, 40240, 41010, 41780, 42550]
+    },
+    "上士": {
+        y_lead: [67695, 68640, 69585, 70530, 71475, 72420, 73365, 74310, 75255, 76200, 77145, 78090],
+        e_lead: [45130, 45760, 46390, 47020, 47650, 48280, 48910, 49540, 50170, 50800, 51430, 52060],
+        y_none: [61995, 62940, 63885, 64830, 65775, 66720, 67665, 68610, 69555, 70500, 71445, 72390],
+        e_none: [41330, 41960, 42590, 43220, 43850, 44480, 45110, 45740, 46370, 47000, 47630, 48260]
+    },
+    "中士": {
+        y_lead: [61425, 62235, 63045, 63855, 64665, 65475, 66285, 67095, 67905, 68715, 69525, 70335],
+        e_lead: [40950, 41490, 42030, 42570, 43110, 43650, 44190, 44730, 45270, 45810, 46350, 46890],
+        y_none: [57375, 58185, 58995, 59805, 60615, 61425, 62235, 63045, 63855, 64665, 65475, 66285],
+        e_none: [38250, 38790, 39330, 39870, 40410, 40950, 41490, 42030, 42570, 43110, 43650, 44190]
+    },
+    "下士": {
+        y_lead: [54315, 55125, 55935, 56745, 57555, 58380, 59190, 60330, 61485, 62625, 63780, 64935],
+        e_lead: [36210, 36750, 37290, 37830, 38370, 38920, 39460, 40220, 40990, 41750, 42520, 43290],
+        y_none: [50580, 51390, 52200, 53010, 53820, 54630, 55440, 56250, 57060, 57870, 58680, 59490],
+        e_none: [33720, 34260, 34800, 35340, 35880, 36420, 36960, 37500, 38040, 38580, 39120, 39660]
+    },
+    "上兵": { y_lead: [57240], e_lead: [38160], y_none: [57240], e_none: [38160] },
+    "一兵": { y_lead: [55170], e_lead: [36780], y_none: [55170], e_none: [36780] },
+    "二兵": { y_lead: [53130], e_lead: [35420], y_none: [53130], e_none: [35420] }
+};
 
-    let isLead = false;
-    let selectedLv = 0;
-    let evalMultiplier = 1.0;
+function init() {
+    const r1 = document.getElementById('r1');
+    const r2 = document.getElementById('r2');
+    Object.keys(database).forEach(rank => {
+        r1.add(new Option(rank, rank));
+        r2.add(new Option(rank, rank));
+    });
+    r1.value = "中士";
+    r2.value = "上士";
+    updateLevels('l1', "中士");
+    updateLevels('l2', "上士");
+    document.getElementById('l1').value = 1; // 預設中士二級
+}
 
-    function init() {
-        const sel = document.getElementById('rank');
-        Object.keys(db).forEach(k => sel.add(new Option(k, k)));
-        sel.value = "中校";
-        render();
+function updateLevels(selectId, rank) {
+    const lSelect = document.getElementById(selectId);
+    lSelect.innerHTML = "";
+    const levels = database[rank].y_lead.length;
+    for(let i=1; i<=levels; i++) {
+        lSelect.add(new Option(i + " 級", i-1));
     }
+}
 
-    function changeType(l) {
-        isLead = l;
-        document.getElementById('type-l').className = l ? 'btn-item active' : 'btn-item';
-        document.getElementById('type-n').className = !l ? 'btn-item active' : 'btn-item';
-        render();
-    }
+function calculate() {
+    const rank1 = document.getElementById('r1').value;
+    const lv1 = parseInt(document.getElementById('l1').value);
+    const isLead1 = document.getElementById('b1').checked;
+    const yearEnd = isLead1 ? database[rank1].y_lead[lv1] : database[rank1].y_none[lv1];
 
-    function changeEval(e) {
-        evalMultiplier = e;
-        document.getElementById('ev-1').className = e === 1 ? 'eval-card active' : 'eval-card';
-        document.getElementById('ev-05').className = e === 0.5 ? 'eval-card active' : 'eval-card';
-        document.getElementById('ev-rate').innerText = e.toFixed(1);
-        calculate();
-    }
+    const rank2 = document.getElementById('r2').value;
+    const lv2 = parseInt(document.getElementById('l2').value);
+    const isLead2 = document.getElementById('b2').checked;
+    const rate = parseFloat(document.getElementById('eval').value);
+    const baseEval = isLead2 ? database[rank2].e_lead[lv2] : database[rank2].e_none[lv2];
+    const finalEval = baseEval * rate;
 
-    function render() {
-        const rank = document.getElementById('rank').value;
-        const list = document.getElementById('lv-list');
-        const dataY = isLead && db[rank].y_l ? db[rank].y_l : db[rank].y_n;
-        
-        document.getElementById('rank-name').innerText = rank;
-        document.getElementById('lv-count').innerText = `共 ${dataY.length} 級`;
-        
-        // 如果切換階級後級碼超出範圍，重設為第一級
-        if (selectedLv >= dataY.length) selectedLv = 0;
+    document.getElementById('res_y').innerText = "$" + yearEnd.toLocaleString();
+    document.getElementById('res_e').innerText = "$" + Math.round(finalEval).toLocaleString();
+    document.getElementById('res_t').innerText = "$" + Math.round(yearEnd + finalEval).toLocaleString();
+    document.getElementById('result').style.display = 'block';
+}
 
-        list.innerHTML = "";
-        dataY.forEach((val, i) => {
-            const item = document.createElement('div');
-            item.className = `list-item ${i === selectedLv ? 'selected' : ''}`;
-            const badge = (i === dataY.length - 1) ? '<span class="badge">滿級數</span>' : '';
-            item.innerHTML = `<div>第 ${i+1} 級 ${badge}</div> <div style="color:var(--text-dim)">$${Math.round(val/1.5).toLocaleString()}</div>`;
-            item.onclick = () => { selectedLv = i; render(); };
-            list.appendChild(item);
-        });
-        calculate();
-    }
-
-    function calculate() {
-        const rank = document.getElementById('rank').value;
-        const dataY = isLead && db[rank].y_l ? db[rank].y_l : db[rank].y_n;
-        const dataE = isLead && db[rank].e_l ? db[rank].e_l : db[rank].e_n;
-        
-        const yVal = dataY[selectedLv];
-        
-        // 滿級數自動判定：如果是該階最後一級，考績加倍 (1.0->2.0 / 0.5->1.0)
-        let actualEval = evalMultiplier;
-        if (selectedLv === dataY.length - 1) {
-            actualEval = evalMultiplier * 2;
-        }
-
-        const eVal = Math.round(dataE[selectedLv] * actualEval);
-
-        document.getElementById('final-y').innerText = `$${yVal.toLocaleString()}`;
-        document.getElementById('final-e').innerText = `$${eVal.toLocaleString()}`;
-        document.getElementById('final-total').innerText = (yVal + eVal).toLocaleString();
-    }
-
-    init();
+init();
 </script>
 </body>
 </html>
