@@ -2,427 +2,342 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>115年獎金計算機 - 神秘版</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>115年國軍獎金試算</title>
     <style>
         :root {
-            --bg: #030712;
-            --card-bg: #111827;
-            --primary: #10b981; /* 螢光綠 */
-            --accent: #6366f1;  /* 神秘紫藍 */
-            --text-main: #f9fafb;
-            --text-dim: #9ca3af;
-            --border: #1f2937;
+            --bg-dark: #07090e;
+            --card-bg: #151c2c;
+            --item-bg: #1e2638;
+            --accent: #00f2ff; /* 神秘青色 */
+            --text-main: #ffffff;
+            --text-dim: #8ba1b7;
+            --border: #2d3748;
+            --active-btn: #334155;
         }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: -apple-system, system-ui, sans-serif;
-            background-color: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-dark);
             color: var(--text-main);
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            padding-bottom: 120px; /* 留位置給底部結算列 */
+        }
+
+        /* 頂部大標題 */
+        .header {
+            padding: 40px 20px 20px;
+            background: linear-gradient(180deg, #1a2333 0%, var(--bg-dark) 100%);
+        }
+
+        .header h1 { font-size: 24px; margin: 0; font-weight: 800; letter-spacing: 1px; }
+        .header p { font-size: 13px; color: var(--text-dim); margin-top: 8px; }
+
+        /* 分頁切換 */
+        .tabs {
             display: flex;
-            justify-content: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
         }
-
-        .container {
-            width: 100%;
-            max-width: 440px;
-        }
-
-        header {
-            margin-bottom: 24px;
-            text-align: left;
-        }
-
-        h1 {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .section-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 16px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .row {
-            margin-bottom: 16px;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 15px;
             color: var(--text-dim);
-            margin-bottom: 6px;
+            cursor: pointer;
+            position: relative;
+        }
+        .tab.active { color: var(--accent); font-weight: bold; }
+        .tab.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0; left: 20%; right: 20%;
+            height: 3px; background: var(--accent);
+            border-radius: 3px 3px 0 0;
         }
 
-        select, .input-mock {
-            width: 100%;
-            background: #1f2937;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text-main);
-            padding: 12px;
-            font-size: 16px;
-            outline: none;
-            appearance: none;
-        }
+        .container { padding: 0 16px; }
 
-        /* 滑桿樣式 */
-        .slider-container {
-            margin: 10px 0;
-        }
-        input[type="range"] {
-            width: 100%;
-            accent-color: var(--primary);
-            background: #1f2937;
-            height: 6px;
-            border-radius: 3px;
-        }
+        .section-label { font-size: 14px; color: var(--text-dim); margin: 20px 0 10px; }
 
-        .slider-label {
+        /* 下拉選單卡片 */
+        .rank-select-box {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
-        /* 切換按鈕 (考績等第) */
-        .toggle-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            background: #1f2937;
-            padding: 4px;
-            border-radius: 14px;
-        }
-
-        .toggle-btn {
-            padding: 8px;
-            text-align: center;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-
-        .toggle-btn.active {
-            background: var(--primary);
-            color: #000;
-            font-weight: bold;
-        }
-
-        .checkbox-row {
-            display: flex;
             align-items: center;
-            gap: 10px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+        }
+
+        /* 職務按鈕切換 */
+        .toggle-container {
+            display: flex;
+            background: var(--item-bg);
+            border-radius: 12px;
+            padding: 4px;
+            gap: 4px;
+        }
+        .toggle-item {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
             font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--text-dim);
+        }
+        .toggle-item.active {
+            background: var(--active-btn);
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* 俸級清單區 */
+        .level-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
             margin-top: 10px;
+        }
+        .level-header {
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--accent);
+            border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+        }
+        .level-list { max-height: 250px; overflow-y: auto; }
+        .level-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
             cursor: pointer;
         }
+        .level-item:last-child { border: none; }
+        .level-item.selected { background: rgba(0, 242, 255, 0.1); border-left: 4px solid var(--accent); }
+        .level-name { font-size: 16px; }
+        .level-amount { font-family: 'JetBrains Mono', monospace; color: var(--text-dim); }
+        .selected .level-amount { color: var(--accent); font-weight: bold; }
 
-        input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-        }
-
-        /* 結果展示區 */
-        .result-panel {
-            background: linear-gradient(145deg, #111827, #030712);
-            border: 1px solid var(--primary);
-            border-radius: 24px;
-            padding: 24px;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .result-grid {
+        /* 考績設定按鈕組 */
+        .eval-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-top: 16px;
         }
-
-        .res-box {
-            background: rgba(255,255,255,0.05);
-            padding: 12px;
-            border-radius: 16px;
-        }
-
-        .res-label { font-size: 12px; color: var(--text-dim); }
-        .res-val { font-size: 16px; font-weight: bold; margin-top: 4px; color: var(--text-main); }
-
-        .total-val {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--primary);
-            text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
-            margin: 8px 0;
-        }
-
-        .footer {
+        .eval-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 15px;
             text-align: center;
-            padding: 24px;
-            font-size: 12px;
-            color: var(--text-dim);
+            cursor: pointer;
         }
+        .eval-box.active {
+            border-color: var(--accent);
+            background: rgba(0, 242, 255, 0.05);
+        }
+        .eval-title { font-size: 18px; font-weight: bold; display: block; }
+        .eval-desc { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+        .eval-box.active .eval-title { color: var(--accent); }
 
-        .special-hint {
-            color: #fbbf24;
-            font-size: 12px;
-            margin-top: 8px;
-            display: none;
+        /* 底部固定結算列 */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: #111827;
+            border-top: 1px solid var(--border);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+        .total-info .label { font-size: 13px; color: var(--text-dim); }
+        .total-info .amount { font-size: 32px; font-weight: 800; color: white; display: block; margin-top: 5px; }
+        .total-info .currency { color: var(--accent); margin-right: 5px; }
+
+        .detail-info { text-align: right; }
+        .detail-row { font-size: 13px; margin-bottom: 4px; }
+        .detail-row span:first-child { color: var(--text-dim); margin-right: 8px; }
+        .detail-row span:last-child { font-weight: bold; }
+        .bonus-y { color: white; }
+        .bonus-e { color: #f59e0b; }
+
+        /* 小標籤 */
+        .badge {
+            background: #f59e0b; color: #000;
+            padding: 2px 6px; border-radius: 4px;
+            font-size: 10px; margin-left: 8px; font-weight: bold;
         }
     </style>
 </head>
 <body>
 
+<div class="header">
+    <h1>115年國軍年終獎金試算</h1>
+    <p>依據國軍年終考績獎金金額表</p>
+</div>
+
+<div class="tabs">
+    <div class="tab active">對照表查詢</div>
+    <div class="tab">自訂輸入</div>
+</div>
+
 <div class="container">
-    <header>
-        <h1>獎金計算機 115 Ver.</h1>
-    </header>
+    <div class="section-label">選擇階級</div>
+    <select id="rankSelect" class="rank-select-box" style="width:100%;" onchange="renderLevels()">
+        </select>
 
-    <div class="card">
-        <div class="section-title">年終獎金 (1.5個月)</div>
-        <div class="row">
-            <label>計算階級</label>
-            <select id="r1" onchange="syncData()"></select>
-        </div>
-        <div class="row">
-            <label>目前俸級</label>
-            <select id="l1" onchange="syncData()"></select>
-        </div>
-        <div class="slider-container">
-            <label>領取比例 (<span id="ratio-text">12</span>/12)</label>
-            <input type="range" id="ratio-slider" min="1" max="12" value="12" oninput="syncData()">
-        </div>
-        <label class="checkbox-row">
-            <input type="checkbox" id="b1" checked onchange="syncData()"> 支領領導加給
-        </label>
+    <div class="section-label">職務性質</div>
+    <div class="toggle-container">
+        <div id="type-lead" class="toggle-item" onclick="setType(true)">領導職</div>
+        <div id="type-none" class="toggle-item active" onclick="setType(false)">非領導職</div>
     </div>
 
-    <div class="card">
-        <div class="section-title">考績獎金</div>
-        <div class="row">
-            <label>考績階級</label>
-            <select id="r2" onchange="syncData()"></select>
+    <div class="section-label">俸級 (本俸)</div>
+    <div class="level-card">
+        <div class="level-header">
+            <span id="rank-display">中校</span>
+            <span id="count-display">共 12 級</span>
         </div>
-        <div class="row">
-            <label>考績俸級</label>
-            <select id="l2" onchange="syncData()"></select>
-        </div>
-        <div class="row">
-            <label>考核等第</label>
-            <div class="toggle-group">
-                <div id="eval-1" class="toggle-btn active" onclick="setEval(1)">甲等</div>
-                <div id="eval-05" class="toggle-btn" onclick="setEval(0.5)">乙等</div>
+        <div class="level-list" id="levelList">
             </div>
-        </div>
-        <label class="checkbox-row">
-            <input type="checkbox" id="b2" checked onchange="syncData()"> 支領領導加給
-        </label>
-        <div id="max-hint" class="special-hint">✨ 已達該階最高俸級，考績獎金加倍 (2.0 個月)</div>
     </div>
 
-    <div class="result-panel">
-        <div class="res-label">預估發放總額</div>
-        <div class="total-val" id="total-val">$0</div>
-        
-        <div class="result-grid">
-            <div class="res-box">
-                <div class="res-label">年終金額</div>
-                <div class="res-val" id="res-y">$0</div>
-            </div>
-            <div class="res-box">
-                <div class="res-label">考績金額</div>
-                <div class="res-val" id="res-e">$0</div>
-            </div>
+    <div class="section-label">考績獎金設定</div>
+    <div class="eval-grid">
+        <div id="eval-1" class="eval-box active" onclick="setEval(1.0)">
+            <span class="eval-title">甲等</span>
+            <span class="eval-desc">1.0 個月</span>
+        </div>
+        <div id="eval-05" class="eval-box" onclick="setEval(0.5)">
+            <span class="eval-title">乙上</span>
+            <span class="eval-desc">0.5 個月</span>
         </div>
     </div>
+</div>
 
-    <div class="footer">
-        本試算僅供參考，實際金額請以發放薪資條為準
+<div class="bottom-bar">
+    <div class="total-info">
+        <span class="label">預估領取總額</span>
+        <span class="amount"><span class="currency">$</span><span id="total-val">0</span></span>
+    </div>
+    <div class="detail-info">
+        <div class="detail-row">
+            <span>年終 (1.5)</span>
+            <span id="res-y" class="bonus-y">$0</span>
+        </div>
+        <div class="detail-row">
+            <span>考績 (<span id="eval-rate-text">1.0</span>)</span>
+            <span id="res-e" class="bonus-e">$0</span>
+        </div>
     </div>
 </div>
 
 <script>
-    // 數據庫 (與之前提供的一致)
+    // 這裡放入與 114 年網頁相同的資料邏輯 (範例資料如下)
     const database = {
-        "上校": {
-            y_lead: [134715, 137025, 139320, 141615, 143910, 146205, 148500, 150810, 153105, 155400, 157695, 160005],
-            e_lead: [89810, 91350, 92880, 94410, 95940, 97470, 99010, 100540, 102070, 103600, 105130, 106670],
-            y_none: [114450, 116760, 119055, 121350, 123645, 125940, 128250, 130545, 132840, 135150, 137430, 139740],
-            e_none: [76300, 77840, 79370, 80900, 82430, 83960, 85500, 87030, 88560, 90090, 91620, 93160]
-        },
-        "中校": {
-            y_lead: [112755, 114480, 116205, 117930, 119640, 121365, 123090, 124815, 126540, 128265, 129990, 131715],
-            e_lead: [75170, 76320, 77470, 78620, 79760, 80910, 82060, 83210, 84360, 85510, 86660, 87810],
-            y_none: [99435, 101160, 102885, 104610, 106320, 108045, 109770, 111495, 113220, 114945, 116670, 118395],
-            e_none: [66290, 67440, 68590, 69740, 70880, 72030, 73180, 74330, 75480, 76630, 77780, 78930]
-        },
-        "少校": {
-            y_lead: [95370, 97095, 98820, 100545, 102270, 103995, 105720, 107445, 109155, 110880, 112605, 114330],
-            e_lead: [63580, 64730, 65880, 67030, 68180, 69330, 70480, 71630, 72770, 73920, 75070, 76220],
-            y_none: [86475, 88200, 89925, 91650, 93375, 95100, 96825, 98550, 100260, 101985, 103710, 105435],
-            e_none: [57650, 58800, 59950, 61100, 62250, 63400, 64550, 65700, 66840, 67990, 69140, 70290]
-        },
-        "上尉": {
-            y_lead: [86445, 88170, 89895, 91620, 93345, 95070, 96795, 98520, 100230, 101955, 103680, 105405],
-            e_lead: [57630, 58780, 59930, 61080, 62230, 63380, 64530, 65680, 66820, 67970, 69120, 70270],
-            y_none: [79140, 80865, 82590, 84315, 86040, 87765, 89490, 91215, 92925, 94650, 96375, 98100],
-            e_none: [52760, 53910, 55060, 56210, 57360, 58510, 59660, 60810, 61950, 63100, 64250, 65400]
-        },
-        "中尉": {
-            y_lead: [76635, 77790, 78930, 80085, 81240, 82380, 83535, 84675, 85830, 86985],
-            e_lead: [51090, 51860, 52620, 53390, 54160, 54920, 55690, 56450, 57220, 57990],
-            y_none: [70155, 71310, 72450, 73605, 74760, 75900, 77055, 78195, 79350, 80505],
-            e_none: [46770, 47540, 48300, 49070, 49840, 50600, 51370, 52130, 52900, 53670]
-        },
-        "少尉": {
-            y_lead: [71430, 72585, 73740, 74880, 76035, 77175, 78330, 79485, 80625, 81780],
-            e_lead: [47620, 48390, 49160, 49920, 50690, 51450, 52220, 52990, 53750, 54520],
-            y_none: [65250, 66405, 67560, 68700, 69855, 70995, 72150, 73305, 74445, 75600],
-            e_none: [43500, 44270, 45040, 45800, 46570, 47330, 48100, 48870, 49630, 50400]
-        },
-        "一等士官長": {
-            y_lead: [87195, 88350, 89490, 90645, 91800, 92940, 94095, 95235, 96390, 97545, 98685, 99840, 100980, 102135, 103290, 104430, 105585, 106725, 107880, 109035],
-            e_lead: [58130, 58900, 59660, 60430, 61200, 61960, 62730, 63490, 64260, 65030, 65790, 66560, 67320, 68090, 68860, 69620, 70390, 71150, 71920, 72690],
-            y_none: [80730, 81885, 83025, 84180, 85335, 86475, 87630, 88770, 89925, 91080, 92220, 93375, 94515, 95670, 96825, 97965, 99120, 100260, 101415, 102570],
-            e_none: [53820, 54590, 55350, 56120, 56890, 57650, 58420, 59180, 59950, 60720, 61480, 62250, 63010, 63780, 64550, 65310, 66080, 66840, 67610, 68380]
-        },
-        "二等士官長": {
-            y_lead: [79860, 81015, 82155, 83310, 84465, 85605, 86760, 87900, 89055, 90210, 91350, 92505, 93645, 94800, 95955, 97095, 98250, 99390, 100545, 101700],
-            e_lead: [53240, 54010, 54770, 55540, 56310, 57070, 57840, 58600, 59370, 60140, 60900, 61670, 62430, 63200, 63970, 64730, 65500, 66260, 67030, 67800],
-            y_none: [73395, 74550, 75690, 76845, 78000, 79140, 80295, 81435, 82590, 83745, 84885, 86040, 87180, 88335, 89490, 90630, 91785, 92925, 94080, 95235],
-            e_none: [48930, 49700, 50460, 51230, 52000, 52760, 53530, 54290, 55060, 55830, 56590, 57360, 58120, 58890, 59660, 60420, 61190, 61950, 62720, 63490]
-        },
-        "三等士官長": {
-            y_lead: [73170, 74325, 75480, 76620, 77775, 78915, 80070, 81225, 82365, 83520, 84660, 85815, 86970, 88110, 89265, 90405, 91560, 92715, 93855, 95010],
-            e_lead: [48780, 49550, 50320, 51080, 51850, 52610, 53380, 54150, 54910, 55680, 56440, 57210, 57980, 58740, 59510, 60270, 61040, 61810, 62570, 63340],
-            y_none: [66705, 67860, 69015, 70155, 71310, 72450, 73605, 74760, 75900, 77055, 78195, 79350, 80505, 81645, 82800, 83940, 85095, 86250, 87390, 88545],
-            e_none: [44470, 45240, 46010, 46770, 47540, 48300, 49070, 49840, 50600, 51370, 52130, 52900, 53670, 54430, 55200, 55960, 56730, 57500, 58260, 59030]
-        },
-        "上士": {
-            y_lead: [67695, 68850, 69990, 71145, 72300, 73440, 74595, 75735, 76890, 78045, 79185, 80340],
-            e_lead: [45130, 45900, 46660, 47430, 48200, 48960, 49730, 50490, 51260, 52030, 52790, 53560],
-            y_none: [62550, 63705, 64845, 66000, 67155, 68295, 69450, 70590, 71745, 72900, 74040, 75195],
-            e_none: [41700, 42470, 43230, 44000, 44770, 45530, 46300, 47060, 47830, 48600, 49360, 50130]
-        },
-        "中士": {
-            y_lead: [61080, 62235, 63375, 64530, 65685, 66825, 67980, 69120, 70275, 71430, 72570, 73725],
-            e_lead: [40720, 41490, 42250, 43020, 43790, 44550, 45320, 46080, 46850, 47620, 48380, 49150],
-            y_none: [56715, 57870, 59010, 60165, 61320, 62460, 63615, 64755, 65910, 67065, 68205, 69360],
-            e_none: [37810, 38580, 39340, 40110, 40880, 41640, 42410, 43170, 43940, 44710, 45470, 46240]
-        },
-        "下士": {
-            y_lead: [54315, 55125, 55935, 56745, 57555, 58380, 59190, 60330, 61485, 62625, 63780, 64935],
-            e_lead: [36210, 36750, 37290, 37830, 38370, 38920, 39460, 40220, 40990, 41750, 42520, 43290],
-            y_none: [50580, 51390, 52200, 53010, 53820, 54645, 55455, 56595, 57750, 58890, 60045, 61200],
-            e_none: [33720, 34260, 34800, 35340, 35880, 36430, 36970, 37730, 38500, 39260, 40030, 40800]
-        },
-        "上兵": {
-            y_none: [46275, 47535, 48345, 49155, 49965, 50775],
-            e_none: [30850, 31690, 32230, 32770, 33310, 33850]
-        }
+        "上校": { y_lead: [134715,137025,139320,141615,143910,146205,148500,150810,153105,155400,157695,160005], e_lead: [89810,91350,92880,94410,95940,97470,99010,100540,102070,103600,105130,106670], y_none: [114450,116760,119055,121350,123645,125940,128250,130545,132840,135150,137430,139740], e_none: [76300,77840,79370,80900,82430,83960,85500,87030,88560,90090,91620,93160] },
+        "中校": { y_lead: [112755,114480,116205,117930,119640,121365,123090,124815,126540,128265,129990,131715], e_lead: [75170,76320,77470,78620,79760,80910,82060,83210,84360,85510,86660,87810], y_none: [99435,101160,102885,104610,106320,108045,109770,111495,113220,114945,116670,118395], e_none: [66290,67440,68590,69740,70880,72030,73180,74330,75480,76630,77780,78930] },
+        "少校": { y_lead: [95370,97095,98820,100545,102270,103995,105720,107445,109155,110880,112605,114330], e_lead: [63580,64730,65880,67030,68180,69330,70480,71630,72770,73920,75070,76220], y_none: [86475,88200,89925,91650,93375,95100,96825,98550,100260,101985,103710,105435], e_none: [57650,58800,59950,61100,62250,63400,64550,65700,66840,67990,69140,70290] },
+        "上士": { y_lead: [67695,68850,69990,71145,72300,73440,74595,75735,76890,78045,79185,80340], e_lead: [45130,45900,46660,47430,48200,48960,49730,50490,51260,52030,52790,53560], y_none: [62550,63705,64845,66000,67155,68295,69450,70590,71745,72900,74040,75195], e_none: [41700,42470,43230,44000,44770,45530,46300,47060,47830,48600,49360,50130] }
     };
 
-    let currentEval = 1.0;
+    let currentRank = "中校";
+    let isLead = false;
+    let selectedLevelIdx = 0;
+    let evalRate = 1.0;
 
     function init() {
-        const r1 = document.getElementById('r1'), r2 = document.getElementById('r2');
-        Object.keys(database).forEach(rank => {
-            r1.add(new Option(rank, rank));
-            r2.add(new Option(rank, rank));
+        const select = document.getElementById('rankSelect');
+        Object.keys(database).forEach(r => {
+            select.add(new Option(r, r));
         });
-        r1.value = "上士"; r2.value = "上士";
-        updateLevels('l1', "上士"); updateLevels('l2', "上士");
-        syncData();
+        select.value = currentRank;
+        renderLevels();
     }
 
-    function updateLevels(selectId, rank) {
-        const lSelect = document.getElementById(selectId);
-        const data = database[rank].y_lead || database[rank].y_none;
-        lSelect.innerHTML = "";
-        data.forEach((_, i) => lSelect.add(new Option((i+1) + " 級碼", i)));
+    function setType(lead) {
+        isLead = lead;
+        document.getElementById('type-lead').classList.toggle('active', lead);
+        document.getElementById('type-none').classList.toggle('active', !lead);
+        renderLevels();
     }
 
-    // 模擬 Vercel 的切換功能
-    function setEval(val) {
-        currentEval = val;
-        document.getElementById('eval-1').classList.toggle('active', val === 1);
-        document.getElementById('eval-05').classList.toggle('active', val === 0.5);
-        syncData();
+    function setEval(rate) {
+        evalRate = rate;
+        document.getElementById('eval-1').classList.toggle('active', rate === 1.0);
+        document.getElementById('eval-05').classList.toggle('active', rate === 0.5);
+        document.getElementById('eval-rate-text').innerText = rate.toFixed(1);
+        calculate();
     }
 
-    function syncData() {
-        // 取得年終數據
-        const rank1 = document.getElementById('r1').value;
-        const lv1 = parseInt(document.getElementById('l1').value);
-        const isLead1 = document.getElementById('b1').checked;
-        const ratio = parseInt(document.getElementById('ratio-slider').value);
-        document.getElementById('ratio-text').innerText = ratio;
-
-        // 當階級改變時自動更新級碼下拉選單
-        const l1Count = document.getElementById('l1').childElementCount;
-        const dataCount1 = (database[rank1].y_lead || database[rank1].y_none).length;
-        if (l1Count !== dataCount1) updateLevels('l1', rank1);
-
-        // 取得考績數據
-        const rank2 = document.getElementById('r2').value;
-        const lv2 = parseInt(document.getElementById('l2').value);
-        const isLead2 = document.getElementById('b2').checked;
-
-        const l2Count = document.getElementById('l2').childElementCount;
-        const dataCount2 = (database[rank2].y_lead || database[rank2].y_none).length;
-        if (l2Count !== dataCount2) updateLevels('l2', rank2);
-
-        calculate(rank1, lv1, isLead1, ratio, rank2, lv2, isLead2);
-    }
-
-    function calculate(r1, lv1, isL1, ratio, r2, lv2, isL2) {
-        // 年終計算
-        const yBase = (isL1 && database[r1].y_lead) ? database[r1].y_lead[lv1] : database[r1].y_none[lv1];
-        const yResult = Math.round(yBase * (ratio / 12));
-
-        // 考績計算 (最高俸級判定)
-        const maxLv = (database[r2].y_lead || database[r2].y_none).length - 1;
-        let bonusMultiplier = currentEval; 
+    function renderLevels() {
+        currentRank = document.getElementById('rankSelect').value;
+        const listDiv = document.getElementById('levelList');
+        const dataY = isLead ? database[currentRank].y_lead : database[currentRank].y_none;
+        const dataE = isLead ? database[currentRank].e_lead : database[currentRank].e_none;
         
-        if (lv2 === maxLv) {
-            bonusMultiplier = currentEval * 2; // 最高俸級加倍
-            document.getElementById('max-hint').style.display = 'block';
-        } else {
-            document.getElementById('max-hint').style.display = 'none';
-        }
+        document.getElementById('rank-display').innerText = currentRank;
+        document.getElementById('count-display').innerText = `共 ${dataY.length} 級`;
 
-        const eBase = (isL2 && database[r2].e_lead) ? database[r2].e_lead[lv2] : database[r2].e_none[lv2];
-        const eResult = Math.round(eBase * bonusMultiplier);
-
-        // UI 更新
-        document.getElementById('res-y').innerText = "$" + yResult.toLocaleString();
-        document.getElementById('res-e').innerText = "$" + eResult.toLocaleString();
-        document.getElementById('total-val').innerText = "$" + (yResult + eResult).toLocaleString();
+        listDiv.innerHTML = "";
+        dataY.forEach((val, idx) => {
+            const item = document.createElement('div');
+            item.className = `level-item ${idx === selectedLevelIdx ? 'selected' : ''}`;
+            
+            // 滿級數標籤邏輯
+            const isMax = idx === dataY.length - 1 ? '<span class="badge">滿級數</span>' : '';
+            
+            item.innerHTML = `
+                <div class="level-name">第 ${idx + 1} 級 ${isMax}</div>
+                <div class="level-amount">$${Math.round(val/1.5).toLocaleString()}</div>
+            `;
+            item.onclick = () => {
+                selectedLevelIdx = idx;
+                renderLevels();
+            };
+            listDiv.appendChild(item);
+        });
+        calculate();
     }
 
-    window.onload = init;
+    function calculate() {
+        const dataY = isLead ? database[currentRank].y_lead : database[currentRank].y_none;
+        const dataE = isLead ? database[currentRank].e_lead : database[currentRank].e_none;
+        
+        const yBonus = dataY[selectedLevelIdx];
+        
+        // 滿級數考績加倍邏輯
+        let finalEvalRate = evalRate;
+        if (selectedLevelIdx === dataY.length - 1) {
+            finalEvalRate = evalRate * 2;
+        }
+        
+        const eBonus = Math.round(dataE[selectedLevelIdx] * finalEvalRate);
+
+        document.getElementById('res-y').innerText = `$${yBonus.toLocaleString()}`;
+        document.getElementById('res-e').innerText = `$${eBonus.toLocaleString()}`;
+        document.getElementById('total-val').innerText = (yBonus + eBonus).toLocaleString();
+    }
+
+    init();
 </script>
+
 </body>
 </html>
