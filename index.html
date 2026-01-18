@@ -158,12 +158,49 @@
         }
         
         .bonus-hint { font-size: 11px; color: var(--warning-red); margin-top: 8px; display: none; }
-
+        
         footer {
-            padding: 25px 15px;
+            padding: 30px 15px;
             text-align: center;
-            background: rgba(0,0,0,0.3);
+            background: radial-gradient(circle, var(--command-blue) 0%, var(--stealth-dark) 100%);
             border-top: 1px solid var(--panel-border);
+            perspective: 1000px; /* 增加立體感 */
+        }
+        
+        .author-box { 
+            display: inline-block;
+            padding: 10px 30px;
+            background: #000;
+            color: var(--neon-green);
+            font-size: 13px;
+            letter-spacing: 2px;
+            font-weight: bold;
+            border: 2px solid var(--neon-green);
+            position: relative;
+            /* 令牌八角形裁切效果 */
+            clip-path: polygon(10% 0, 90% 0, 100% 30%, 100% 70%, 90% 100%, 10% 100%, 0 70%, 0 30%);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+        
+        .author-box:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 157, 0.6);
+            transform: translateZ(20px);
+        }
+        
+        .author-box::before {
+            content: "AUTHORIZATION CARD";
+            display: block;
+            font-size: 8px;
+            opacity: 0.5;
+            margin-bottom: 4px;
+            color: var(--text-dim);
+        }
+        
+        .author-box b {
+            font-size: 16px;
+            text-shadow: 0 0 5px var(--neon-green);
         }
 
         .author-box { 
@@ -179,12 +216,12 @@
 <div class="container">
     <div class="top-stripe"></div>
     <header>
-        <h2>TACTICAL BONUS SYSTEM</h2>
+        <h2>115年國軍年終獎金計算器</h2>
     </header>
 
     <div class="content">
         <section>
-            <h3>1. Annual Bonus (Dec)</h3>
+            <h3>1. 年終設定</h3>
             <label>RANK / 階級</label>
             <select id="r1" onchange="updateLevels('l1', this.value)"></select>
             <label>LEVEL / 俸級</label>
@@ -195,7 +232,7 @@
         </section>
 
         <section>
-            <h3>2. Performance Bonus</h3>
+            <h3>2. 考獎設定</h3>
             <label>RANK / 階級</label>
             <select id="r2" onchange="updateLevels('l2', this.value)"></select>
             <label>LEVEL / 俸級</label>
@@ -203,22 +240,24 @@
             <div class="checkbox-row">
                 <input type="checkbox" id="b2" checked> 領導加給方案
             </div>
-            <label>STATUS / 考核狀態</label>
+            <label>考核狀態</label>
             <div style="font-weight: bold; color: #fff;" id="eval_text">甲等 (1.0 個月)</div>
             <div id="bonus_hint" class="bonus-hint">!! DETECTED: 最高俸級考獎加倍 (2.0x) !!</div>
         </section>
 
-        <button onclick="calculate()">Decrypt / 執行試算</button>
+        <button onclick="calculate()">執行運算</button>
 
         <div id="result">
             <div class="res-line"><span>預計年終獎金:</span><span id="res_y"></span></div>
             <div class="res-line"><span>預計考績獎金:</span><span id="res_e"></span></div>
-            <div class="res-line total-line"><span>TOTAL AMOUNT:</span><span id="res_t"></span></div>
+            <div class="res-line total-line"><span>總金額:</span><span id="res_t"></span></div>
         </div>
     </div>
 
     <footer>
-        <div class="author-box">DECRYPTED BY: <b>上士 郭俊廷</b></div>
+        <div class="author-box">
+        DECRYPTED BY: <b>上士 郭俊廷</b>
+        </div>
     </footer>
 </div>
 
