@@ -18,7 +18,7 @@
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, "Microsoft JhengHei", sans-serif; }
-        body { background: var(--bg); color: var(--text); margin: 0; padding-bottom: 280px; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); margin: 0; padding-bottom: 120px; overflow-x: hidden; }
 
         /* Header */
         .header { padding: 35px 20px 15px; background: linear-gradient(to bottom, #1e293b, var(--bg)); text-align: center; }
@@ -61,8 +61,8 @@
         .total-amount { font-size: 32px; font-weight: 800; color: white; }
         .total-amount span { color: var(--accent); font-size: 20px; margin-right: 5px; }
 
-        /* 超酷炫監製人樣式 */
-        .author-section { margin-top: 15px; text-align: center; }
+        /* 簽名人樣式 - 已從固定列改為隨網頁捲動 */
+        .author-section { margin-top: 40px; margin-bottom: 20px; text-align: center; }
         .signature-box {
             position: relative;
             display: inline-block;
@@ -133,6 +133,18 @@
         <div id="ev-1" class="eval-card active" onclick="setEval(1.0)"><b>甲等</b><br><small>1.0 個月</small></div>
         <div id="ev-05" class="eval-card" onclick="setEval(0.5)"><b>乙上</b><br><small>0.5 個月</small></div>
     </div>
+
+    <div class="author-section">
+        <div class="signature-box">
+            <div class="laser-scan"></div>
+            <span class="author-label">Digital Authentication</span>
+            <div class="author-name-wrap">
+                <span class="author-name">上士 郭俊廷</span>
+                <span class="verified-badge">已認證</span>
+            </div>
+            <div class="auth-code">SEC-ID: GJT-MIL-PRO-VERIFIED</div>
+        </div>
+    </div>
 </div>
 
 <div class="footer-bar">
@@ -144,18 +156,6 @@
         <div style="text-align:right">
             <div style="font-size:13px">年終 <span id="final-y" style="font-weight:bold">$0</span></div>
             <div style="font-size:13px; color:var(--promo-color)">考績 <span id="final-e" style="font-weight:bold">$0</span></div>
-        </div>
-    </div>
-
-    <div class="author-section">
-        <div class="signature-box">
-            <div class="laser-scan"></div>
-            <span class="author-label">Digital Authentication</span>
-            <div class="author-name-wrap">
-                <span class="author-name">上士 郭俊廷</span>
-                <span class="verified-badge">已認證</span>
-            </div>
-            <div class="auth-code">SEC-ID: GJT-MIL-PRO-VERIFIED</div>
         </div>
     </div>
 </div>
