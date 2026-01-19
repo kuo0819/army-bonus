@@ -61,8 +61,8 @@
         .total-amount { font-size: 32px; font-weight: 800; color: white; }
         .total-amount span { color: var(--accent); font-size: 20px; margin-right: 5px; }
 
-        /* 簽名人樣式 - 已從固定列改為隨網頁捲動 */
-        .author-section { margin-top: 40px; margin-bottom: 20px; text-align: center; }
+        /* 簽名人樣式 */
+        .author-section { margin-top: 40px; margin-bottom: 30px; text-align: center; }
         .signature-box {
             position: relative;
             display: inline-block;
@@ -171,7 +171,10 @@
         "三等士官長": { y_l:[73170,74325,75480,76620,77775,78915,80070,81225,82365,83520,84660,85815,86970,88110,89265,90405,91560,92715,93855,95010], e_l:[48780,49550,50320,51080,51850,52610,53380,54150,54910,55680,56440,57210,57980,58740,59510,60270,61040,61810,62570,63340], y_n:[66705,67860,69015,70155,71310,72450,73605,74760,75900,77055,78195,79350,80505,81645,82800,83940,85095,86250,87390,88545], e_n:[44470,45240,46010,46770,47540,48300,49070,49840,50600,51370,52130,52900,53670,54430,55200,55960,56730,57500,58260,59030] },
         "上士": { y_l:[67695,68850,69990,71145,72300,73440,74595,75735,76890,78045,79185,80340], e_l:[45130,45900,46660,47430,48200,48960,49730,50490,51260,52030,52790,53560], y_n:[62550,63705,64845,66000,67155,68295,69450,70590,71745,72900,74040,75195], e_n:[41700,42470,43230,44000,44770,45530,46300,47060,47830,48600,49360,50130] },
         "中士": { y_l:[61080,62235,63375,64530,65685,66825,67980,69120,70275,71430,72570,73725], e_l:[40720,41490,42250,43020,43790,44550,45320,46080,46850,47620,48380,49150], y_n:[56715,57870,59010,60165,61320,62460,63615,64755,65910,67065,68205,69360], e_n:[37810,38580,39340,40110,40880,41640,42410,43170,43940,44710,45470,46240] },
-        "下士": { y_l:[54315,55125,55935,56745,57555,58380,59190,60330,61485,62625,63780,64935], e_l:[36210,36750,37290,37830,38370,38920,39460,40220,40990,41750,42520,43290], y_n:[50580,51390,52200,53010,53820,54645,55455,56595,57750,58890,60045,61200], e_n:[33720,34260,34800,35340,35880,36430,36970,37730,38500,39260,40030,40800] }
+        "下士": { y_l:[54315,55125,55935,56745,57555,58380,59190,60330,61485,62625,63780,64935], e_l:[36210,36750,37290,37830,38370,38920,39460,40220,40990,41750,42520,43290], y_n:[50580,51390,52200,53010,53820,54645,55455,56595,57750,58890,60045,61200], e_n:[33720,34260,34800,35340,35880,36430,36970,37730,38500,39260,40030,40800] },
+        "上等兵": { y_n:[42060], e_n:[28040] },
+        "一等兵": { y_n:[39800], e_n:[26530] },
+        "二等兵": { y_n:[38210], e_n:[25470] }
     };
 
     let isLead = false, lvE = 0, lvY = 0, evalRate = 1.0;
@@ -203,17 +206,19 @@
 
     function onRankEChange() {
         document.getElementById('display-rank-e').innerText = document.getElementById('rank-e').value;
+        lvE = 0; // 重置等級，避免超出索引
         renderE();
     }
 
     function onRankYChange() {
         document.getElementById('display-rank-y').innerText = document.getElementById('rank-y').value;
+        lvY = 0; // 重置等級
         renderY();
     }
 
     function renderE() {
         const rank = document.getElementById('rank-e').value;
-        const data = isLead ? db[rank].e_l : db[rank].e_n;
+        const data = (isLead && db[rank].e_l) ? db[rank].e_l : db[rank].e_n;
         const list = document.getElementById('list-e');
         list.innerHTML = "";
         data.forEach((v, i) => {
@@ -228,7 +233,7 @@
 
     function renderY() {
         const rank = document.getElementById('rank-y').value;
-        const data = isLead ? db[rank].y_l : db[rank].y_n;
+        const data = (isLead && db[rank].y_l) ? db[rank].y_l : db[rank].y_n;
         const list = document.getElementById('list-y');
         list.innerHTML = "";
         data.forEach((v, i) => {
@@ -255,14 +260,17 @@
         const finalLvY = isP ? lvY : lvE;
 
         // 考績獎金
-        const dataE = isLead ? db[rankE].e_l : db[rankE].e_n;
+        const dataE = (isLead && db[rankE].e_l) ? db[rankE].e_l : db[rankE].e_n;
         let rate = evalRate;
-        if (lvE === dataE.length - 1 && dataE.length > 1) rate *= 2; 
-        const eBonus = Math.round(dataE[lvE] * rate);
+        // 確保 lvE 在範圍內
+        const safeLvE = Math.min(lvE, dataE.length - 1);
+        if (safeLvE === dataE.length - 1 && dataE.length > 1) rate *= 2; 
+        const eBonus = Math.round(dataE[safeLvE] * rate);
 
         // 年終獎金
-        const dataY = isLead ? db[rankY].y_l : db[rankY].y_n;
-        const yBonus = dataY[finalLvY];
+        const dataY = (isLead && db[rankY].y_l) ? db[rankY].y_l : db[rankY].y_n;
+        const safeLvY = Math.min(finalLvY, dataY.length - 1);
+        const yBonus = dataY[safeLvY];
 
         document.getElementById('final-y').innerText = `$${yBonus.toLocaleString()}`;
         document.getElementById('final-e').innerText = `$${eBonus.toLocaleString()}`;
